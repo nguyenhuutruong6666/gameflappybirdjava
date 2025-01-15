@@ -88,6 +88,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
             @Override
             public void actionPerformed(ActionEvent e) {
               // Code to be executed
+              // test
               placePipes();
             }
         });
