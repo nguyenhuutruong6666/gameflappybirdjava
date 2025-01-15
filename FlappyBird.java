@@ -7,7 +7,7 @@ import javax.swing.*;
 public class FlappyBird extends JPanel implements ActionListener, KeyListener {
     int boardWidth = 360;
     int boardHeight = 640;
-
+    // truong beo ngooo
     //images
     Image backgroundImg;
     Image birdImg;
