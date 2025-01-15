@@ -8,6 +8,8 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
     int boardWidth = 360;
     int boardHeight = 640;
     // truong beo ngooo
+    // truong beo bi nguoi yeu cam sung
+    // thay anh note chua ha truong beo ngoo
     //images
     Image backgroundImg;
     Image birdImg;
