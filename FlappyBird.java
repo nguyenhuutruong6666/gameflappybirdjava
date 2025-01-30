@@ -138,12 +138,10 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
             Pipe pipe = pipes.get(i);
             g.drawImage(pipe.img, pipe.x, pipe.y, pipe.width, pipe.height, null);
         }
-    
+        
         //score
-        g.drawImage(backgroundDiem, 0, 0, this.boardWidth, this.boardHeight, null);
         g.setColor(Color.white);
         g.setFont(new Font("Arial", Font.PLAIN, 32));
-        g.drawString(String.valueOf((int) score), 12, 34);
     
         if (gameOver) {
             // String gameOverText = "Game Over: " + (int) score;
@@ -153,6 +151,9 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
             int y = (boardHeight / 2) + 22;
             g.drawImage(bgScore, 0, 0, this.boardWidth, this.boardHeight, null);
             g.drawString(gameOverText, x, y);
+        } else {
+            //score
+            g.drawImage(backgroundDiem, 0, 0, this.boardWidth, this.boardHeight, null);
             g.drawString(String.valueOf((int) score), 12, 34);
         }
     }
