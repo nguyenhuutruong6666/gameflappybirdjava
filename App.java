@@ -12,10 +12,10 @@ public class App {
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        FlappyBird flappyBird = new FlappyBird();
-        frame.add(flappyBird);
+        // Hiển thị màn hình menu trước
+        MenuScreen menuScreen = new MenuScreen(frame);
+        frame.add(menuScreen);
         frame.pack();
-        flappyBird.requestFocus();
         frame.setVisible(true);
         
     }
