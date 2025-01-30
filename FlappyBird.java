@@ -151,6 +151,25 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
             int y = (boardHeight / 2) + 22;
             g.drawImage(bgScore, 0, 0, this.boardWidth, this.boardHeight, null);
             g.drawString(gameOverText, x, y);
+
+            // // Tạo nút "quay về menu"
+            // JButton clickMenu = new JButton("Menu");
+            // clickMenu.setFont(new Font("Arial", Font.BOLD, 15));
+            // clickMenu.setFocusPainted(false);
+            // clickMenu.setBounds(70, 430, 80, 40);
+            // clickMenu.setBackground(Color.ORANGE);
+            // clickMenu.setForeground(Color.WHITE);
+
+            // // Tạo nút "quay về store"
+            // JButton clickStore = new JButton("Store");
+            // clickStore.setFont(new Font("Arial", Font.BOLD, 15));
+            // clickStore.setFocusPainted(false);
+            // clickStore.setBounds(210, 430, 80, 40);
+            // clickStore.setBackground(Color.ORANGE);
+            // clickStore.setForeground(Color.WHITE);
+
+            // add(clickMenu);
+            // add(clickStore);
         } else {
             //score
             g.drawImage(backgroundDiem, 0, 0, this.boardWidth, this.boardHeight, null);
