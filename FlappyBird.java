@@ -7,11 +7,11 @@ import javax.swing.*;
 public class FlappyBird extends JPanel implements ActionListener, KeyListener {
     int boardWidth = 360;
     int boardHeight = 640;
-    // truong beo ngooo
-    // truong beo bi nguoi yeu cam sung
-    // thay anh note chua ha truong beo ngoo
+
     //images
     Image backgroundImg;
+    Image backgroundDiem;
+    Image bgScore;
     Image birdImg;
     Image topPipeImg;
     Image bottomPipeImg;
@@ -80,6 +80,9 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
         birdImg = new ImageIcon(getClass().getResource("./picture/flappybird.png")).getImage();
         topPipeImg = new ImageIcon(getClass().getResource("./picture/toppipe.png")).getImage();
         bottomPipeImg = new ImageIcon(getClass().getResource("./picture/bottompipe.png")).getImage();
+        backgroundDiem = new ImageIcon(getClass().getResource("./picture/flappybirdbg1.png")).getImage();
+        bgScore = new ImageIcon(getClass().getResource("./picture/bgScore.png")).getImage();
+
 
         //bird
         bird = new Bird(birdImg);
@@ -126,28 +129,33 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
 	public void draw(Graphics g) {
         //background
         g.drawImage(backgroundImg, 0, 0, this.boardWidth, this.boardHeight, null);
-
+    
         //bird
         g.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height, null);
-
+    
         //pipes
         for (int i = 0; i < pipes.size(); i++) {
             Pipe pipe = pipes.get(i);
             g.drawImage(pipe.img, pipe.x, pipe.y, pipe.width, pipe.height, null);
         }
-
+    
         //score
+        g.drawImage(backgroundDiem, 0, 0, this.boardWidth, this.boardHeight, null);
         g.setColor(Color.white);
-
         g.setFont(new Font("Arial", Font.PLAIN, 32));
+        g.drawString(String.valueOf((int) score), 12, 34);
+    
         if (gameOver) {
-            g.drawString("Game Over: " + String.valueOf((int) score), 10, 35);
+            // String gameOverText = "Game Over: " + (int) score;
+            String gameOverText = " " + (int) score + " ";
+            FontMetrics metrics = g.getFontMetrics();
+            int x = (boardWidth - metrics.stringWidth(gameOverText)) / 2;
+            int y = (boardHeight / 2) + 22;
+            g.drawImage(bgScore, 0, 0, this.boardWidth, this.boardHeight, null);
+            g.drawString(gameOverText, x, y);
+            g.drawString(String.valueOf((int) score), 12, 34);
         }
-        else {
-            g.drawString(String.valueOf((int) score), 10, 35);
-        }
-        
-	}
+    }
 
     public void move() {
         //bird
