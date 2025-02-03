@@ -16,6 +16,9 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
     Image topPipeImg;
     Image bottomPipeImg;
 
+    private JButton clickMenu;
+    private JButton clickStore;
+
     //bird class
     int birdX = boardWidth/8;
     int birdY = boardWidth/2;
@@ -152,25 +155,44 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
             g.drawImage(bgScore, 0, 0, this.boardWidth, this.boardHeight, null);
             g.drawString(gameOverText, x, y);
 
-            // // Tạo nút "quay về menu"
-            // JButton clickMenu = new JButton("Menu");
-            // clickMenu.setFont(new Font("Arial", Font.BOLD, 15));
-            // clickMenu.setFocusPainted(false);
-            // clickMenu.setBounds(70, 430, 80, 40);
-            // clickMenu.setBackground(Color.ORANGE);
-            // clickMenu.setForeground(Color.WHITE);
-
-            // // Tạo nút "quay về store"
-            // JButton clickStore = new JButton("Store");
-            // clickStore.setFont(new Font("Arial", Font.BOLD, 15));
-            // clickStore.setFocusPainted(false);
-            // clickStore.setBounds(210, 430, 80, 40);
-            // clickStore.setBackground(Color.ORANGE);
-            // clickStore.setForeground(Color.WHITE);
-
-            // add(clickMenu);
-            // add(clickStore);
+            if (clickMenu == null && clickStore == null) {
+                // Thêm nút "Menu"
+                clickMenu = new JButton("Menu");
+                clickMenu.setFont(new Font("Arial", Font.BOLD, 15));
+                clickMenu.setFocusPainted(false);
+                clickMenu.setBounds(70, 430, 80, 40);
+                clickMenu.setBackground(Color.ORANGE);
+                clickMenu.setForeground(Color.WHITE);
+                clickMenu.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        returnToMenu();
+                    }
+                });
+                
+                // Thêm nút "Store"
+                clickStore = new JButton("Store");
+                clickStore.setFont(new Font("Arial", Font.BOLD, 15));
+                clickStore.setFocusPainted(false);
+                clickStore.setBounds(210, 430, 80, 40);
+                clickStore.setBackground(Color.ORANGE);
+                clickStore.setForeground(Color.WHITE);
+                
+                // Thêm nút vào JPanel
+                this.setLayout(null);
+                this.add(clickMenu);
+                this.add(clickStore);
+            }
         } else {
+            // Ẩn hai nút khi chơi tiếp
+            if (clickMenu != null && clickStore != null) {
+                this.remove(clickMenu);
+                this.remove(clickStore);
+                clickMenu = null;
+                clickStore = null;
+                this.revalidate();
+                this.repaint();
+            }
             //score
             g.drawImage(backgroundDiem, 0, 0, this.boardWidth, this.boardHeight, null);
             g.drawString(String.valueOf((int) score), 12, 34);
@@ -235,8 +257,28 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
                 score = 0;
                 gameLoop.start();
                 placePipeTimer.start();
+
+                // Ẩn hai nút khi chơi tiếp
+                if (clickMenu != null && clickStore != null) {
+                    this.remove(clickMenu);
+                    this.remove(clickStore);
+                    clickMenu = null;
+                    clickStore = null;
+                    this.revalidate();
+                    this.repaint();
+                }
             }
         }
+    }
+
+    private void returnToMenu() {
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        frame.getContentPane().removeAll();
+        MenuScreen menuScreen = new MenuScreen(frame);
+        frame.add(menuScreen);
+        frame.pack();
+        frame.revalidate();
+        frame.repaint();
     }
 
     //not needed
