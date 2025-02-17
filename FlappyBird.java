@@ -24,8 +24,8 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
     int birdY = boardWidth/2;
 //    int birdWidth = 34;
 //    int birdHeight = 24;
-    int birdWidth = 34;
-    int birdHeight = 24;
+    int birdWidth = 60;
+    int birdHeight = 60;
 
     class Bird {
         int x = birdX;
@@ -80,7 +80,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
 
         //load images
         backgroundImg = new ImageIcon(getClass().getResource("./picture/flappybirdbg.png")).getImage();
-        birdImg = new ImageIcon(getClass().getResource("./picture/flappybird.png")).getImage();
+        birdImg = new ImageIcon(getClass().getResource("./picture/test.png")).getImage();
         topPipeImg = new ImageIcon(getClass().getResource("./picture/toppipe.png")).getImage();
         bottomPipeImg = new ImageIcon(getClass().getResource("./picture/bottompipe.png")).getImage();
         backgroundDiem = new ImageIcon(getClass().getResource("./picture/flappybirdbg1.png")).getImage();
@@ -226,14 +226,14 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
     }
 
     boolean collision(Bird a, Pipe b) {
-        return a.x < b.x + b.width &&   //a's top left corner doesn't reach b's top right corner
-               a.x + a.width > b.x &&   //a's top right corner passes b's top left corner
-               a.y < b.y + b.height &&  //a's top left corner doesn't reach b's bottom left corner
-               a.y + a.height > b.y;    //a's bottom left corner passes b's top left corner
+        return a.x < b.x + b.width &&   
+               a.x + a.width > b.x &&   
+               a.y < b.y + b.height && 
+               a.y + a.height > b.y;    
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) { //called every x milliseconds by gameLoop timer
+    public void actionPerformed(ActionEvent e) { 
         move();
         repaint();
         if (gameOver) {
