@@ -1,39 +1,51 @@
 import javax.swing.*;
 import java.awt.*;
-import java.sql.*;
+import java.io.*;
 
 public class StoreBird extends JPanel {
     private int totalScore;
-    
-    public StoreBird(JFrame frame) {
-        setLayout(new BorderLayout());
-        totalScore = getTotalScore();
 
-        JLabel scoreLabel = new JLabel("Tổng điểm: " + totalScore, SwingConstants.CENTER);
-        scoreLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        add(scoreLabel, BorderLayout.CENTER);
+    public StoreBird(JFrame frame) {
+        this.setPreferredSize(new Dimension(360, 640));
+        loadScore();
         
-        JButton backButton = new JButton("Quay lại Menu");
+        JButton backButton = new JButton("Quay lại");
+        backButton.setFont(new Font("Arial", Font.BOLD, 20));
+        backButton.setFocusPainted(false);
+        backButton.setBounds(110, 500, 140, 50);
+        backButton.setBackground(Color.ORANGE);
+        backButton.setForeground(Color.WHITE);
         backButton.addActionListener(e -> {
-            frame.setContentPane(new MenuScreen(frame));
+            frame.getContentPane().removeAll();
+            frame.add(new MenuScreen(frame));
+            frame.pack();
             frame.revalidate();
+            frame.repaint();
         });
-        add(backButton, BorderLayout.SOUTH);
+
+        setLayout(null);
+        add(backButton);
     }
 
-    private int getTotalScore() {
-        int total = 0;
-        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:flappybird.db");
-             Statement stmt = conn.createStatement()) {
-            stmt.execute("CREATE TABLE IF NOT EXISTS Scores (id INTEGER PRIMARY KEY AUTOINCREMENT, score INTEGER)");
-            try (ResultSet rs = stmt.executeQuery("SELECT SUM(score) AS total FROM Scores")) {
-                if (rs.next()) {
-                    total = rs.getInt("total");
+    private void loadScore() {
+        File file = new File("diem.txt");
+        if (file.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line = reader.readLine();
+                if (line != null) {
+                    totalScore = Integer.parseInt(line.trim());
                 }
+            } catch (IOException | NumberFormatException ex) {
+                ex.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return total;
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.setFont(new Font("Arial", Font.BOLD, 32));
+        g.setColor(Color.BLACK);
+        g.drawString("Điểm tích lũy: " + totalScore, 80, 300);
     }
 }

@@ -1,5 +1,11 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.*;
@@ -239,8 +245,36 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
         if (gameOver) {
             placePipeTimer.stop();
             gameLoop.stop();
+            saveScore();
         }
-    }  
+    }
+    
+    private void saveScore() {
+        File file = new File("diem.txt");
+        int totalScore = 0;
+
+        // Đọc điểm cũ
+        if (file.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line = reader.readLine();
+                if (line != null) {
+                    totalScore = Integer.parseInt(line.trim());
+                }
+            } catch (IOException | NumberFormatException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        // Cộng điểm mới vào tổng điểm
+        totalScore += (int) score;
+
+        // Ghi điểm mới vào file
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            writer.write(String.valueOf(totalScore));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
 
     @Override
     public void keyPressed(KeyEvent e) {

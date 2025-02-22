@@ -1,4 +1,4 @@
-import javax.swing.*;
+import javax.swing.*; 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,7 +22,7 @@ public class MenuScreen extends JPanel {
         playButton.setBackground(Color.ORANGE);
         playButton.setForeground(Color.WHITE);
 
-        // Tạo nút "Chơi Game test"
+        // Tạo nút "Store Bird"
         JButton playButton1 = new JButton("Store Bird");
         playButton1.setFont(new Font("Arial", Font.BOLD, 20));
         playButton1.setFocusPainted(false);
@@ -30,7 +30,7 @@ public class MenuScreen extends JPanel {
         playButton1.setBackground(Color.ORANGE);
         playButton1.setForeground(Color.WHITE);
 
-        // Tạo nút "Chơi Game test"
+        // Tạo nút "Thông Tin"
         JButton playButton2 = new JButton("Thông Tin");
         playButton2.setFont(new Font("Arial", Font.BOLD, 20));
         playButton2.setFocusPainted(false);
@@ -42,6 +42,13 @@ public class MenuScreen extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 startGame();
+            }
+        });
+
+        playButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openStore();
             }
         });
 
@@ -57,6 +64,15 @@ public class MenuScreen extends JPanel {
         frame.add(game);
         frame.pack();
         game.requestFocus();
+        frame.revalidate();
+        frame.repaint();
+    }
+
+    private void openStore() {
+        frame.getContentPane().removeAll();
+        StoreBird storeBird = new StoreBird(frame);
+        frame.add(storeBird);
+        frame.pack();
         frame.revalidate();
         frame.repaint();
     }
