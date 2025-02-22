@@ -15,10 +15,10 @@ public class MenuScreen extends JPanel {
         bgStart = new ImageIcon(getClass().getResource("/picture/bgStart.png")).getImage();
 
         // Tạo nút "Chơi Game"
-        JButton playButton = new JButton("Chơi Game");
+        JButton playButton = new JButton("Play Game");
         playButton.setFont(new Font("Arial", Font.BOLD, 20));
         playButton.setFocusPainted(false);
-        playButton.setBounds(110, 200, 140, 50);
+        playButton.setBounds(100, 200, 160, 50);
         playButton.setBackground(Color.ORANGE);
         playButton.setForeground(Color.WHITE);
 
@@ -26,15 +26,15 @@ public class MenuScreen extends JPanel {
         JButton playButton1 = new JButton("Store Bird");
         playButton1.setFont(new Font("Arial", Font.BOLD, 20));
         playButton1.setFocusPainted(false);
-        playButton1.setBounds(110, 300, 140, 50);
+        playButton1.setBounds(100, 300, 160, 50);
         playButton1.setBackground(Color.ORANGE);
         playButton1.setForeground(Color.WHITE);
 
         // Tạo nút "Thông Tin"
-        JButton playButton2 = new JButton("Thông Tin");
+        JButton playButton2 = new JButton("Information");
         playButton2.setFont(new Font("Arial", Font.BOLD, 20));
         playButton2.setFocusPainted(false);
-        playButton2.setBounds(110, 400, 140, 50);
+        playButton2.setBounds(100, 400, 160, 50);
         playButton2.setBackground(Color.ORANGE);
         playButton2.setForeground(Color.WHITE);
 
@@ -49,6 +49,13 @@ public class MenuScreen extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 openStore();
+            }
+        });
+
+        playButton2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openInformation();
             }
         });
 
@@ -72,6 +79,15 @@ public class MenuScreen extends JPanel {
         frame.getContentPane().removeAll();
         StoreBird storeBird = new StoreBird(frame);
         frame.add(storeBird);
+        frame.pack();
+        frame.revalidate();
+        frame.repaint();
+    }
+
+    private void openInformation() {
+        frame.getContentPane().removeAll();
+        Information information = new Information(frame);
+        frame.add(information);
         frame.pack();
         frame.revalidate();
         frame.repaint();

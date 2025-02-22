@@ -183,6 +183,12 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
                 clickStore.setBounds(210, 430, 80, 40);
                 clickStore.setBackground(Color.ORANGE);
                 clickStore.setForeground(Color.WHITE);
+                clickStore.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        ToStore();
+                    }
+                });
                 
                 // Thêm nút vào JPanel
                 this.setLayout(null);
@@ -313,6 +319,16 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
         frame.pack();
         frame.revalidate();
         frame.repaint();
+    }
+
+    private void ToStore() {
+        JFrame frame1 = (JFrame) SwingUtilities.getWindowAncestor(this);
+        frame1.getContentPane().removeAll();
+        StoreBird storeBird = new StoreBird(frame1);
+        frame1.add(storeBird);
+        frame1.pack();
+        frame1.revalidate();
+        frame1.repaint();
     }
 
     //not needed
