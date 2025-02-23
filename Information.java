@@ -7,41 +7,36 @@ public class Information extends JPanel {
     private JFrame frame;
     private Image backgroundImg;
     private Image qrImage;
-    private JButton backButton;
 
     public Information(JFrame frame) {
         this.frame = frame;
         this.setPreferredSize(new Dimension(360, 640));
-        setLayout(null); // Dùng layout null để đặt vị trí nút tự do
 
-        // Tải hình ảnh
         backgroundImg = new ImageIcon(getClass().getResource("/picture/flappybirdbg.png")).getImage();
         qrImage = new ImageIcon(getClass().getResource("/picture/maqr.png")).getImage();
 
-        // Tạo nút "Back to Menu"
-        backButton = new JButton("Back to Menu");
-        backButton.setFont(new Font("Arial", Font.BOLD, 15));
-        backButton.setFocusPainted(false);
-        backButton.setBounds(100, 500, 160, 40); // Đặt vị trí nút
+        // Tạo nút Back
+        JButton backButton = new JButton("Back");
+        backButton.setFont(new Font("Arial", Font.BOLD, 16));
+        backButton.setBounds(10, 10, 80, 30);
         backButton.setBackground(Color.RED);
         backButton.setForeground(Color.WHITE);
 
-        // Sự kiện bấm nút
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                returnToMenu();
+                backToMenu();
             }
         });
 
-        // Thêm nút vào panel
-        this.add(backButton);
+        setLayout(null);
+        add(backButton);
     }
 
-    private void returnToMenu() {
+    private void backToMenu() {
         frame.getContentPane().removeAll();
-        MenuScreen menuScreen = new MenuScreen(frame);
-        frame.add(menuScreen);
+        MenuScreen menu = new MenuScreen(frame);
+        frame.add(menu);
         frame.pack();
         frame.revalidate();
         frame.repaint();
