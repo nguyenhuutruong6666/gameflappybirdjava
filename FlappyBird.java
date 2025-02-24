@@ -78,6 +78,9 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
     boolean gameOver = false;
     double score = 0;
 
+    boolean gameStarted = false;
+    boolean firstTime = true;
+
     FlappyBird() {
         setPreferredSize(new Dimension(boardWidth, boardHeight));
         // setBackground(Color.blue);
@@ -141,17 +144,37 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
     
         //bird
         g.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height, null);
-    
+        
         //pipes
         for (int i = 0; i < pipes.size(); i++) {
             Pipe pipe = pipes.get(i);
             g.drawImage(pipe.img, pipe.x, pipe.y, pipe.width, pipe.height, null);
         }
-        
+        // Space to play
+        if (!gameStarted) {
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.BOLD, 20));
+            String message = "Bấm Space để bắt đầu";
+            FontMetrics metrics = g.getFontMetrics();
+            int x = (boardWidth - metrics.stringWidth(message)) / 2;
+            int y = boardHeight / 2;
+            g.drawString(message, x, y);
+        }
+
+        if (firstTime) {
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.BOLD, 20));
+            String message = "Bấm Space để bắt đầu";
+            FontMetrics metrics = g.getFontMetrics();
+            int x = (boardWidth - metrics.stringWidth(message)) / 2;
+            int y = boardHeight / 2;
+            g.drawString(message, x, y);
+        }
         //score
         g.setColor(Color.white);
         g.setFont(new Font("Arial", Font.PLAIN, 32));
-    
+        
+        
         if (gameOver) {
             // String gameOverText = "Game Over: " + (int) score;
             String gameOverText = " " + (int) score + " ";
@@ -212,26 +235,28 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
     }
 
     public void move() {
+        if (!gameStarted) return; // Nếu chưa bắt đầu thì không di chuyển
+
         //bird
         velocityY += gravity;
         bird.y += velocityY;
         bird.y = Math.max(bird.y, 0); //apply gravity to current bird.y, limit the bird.y to top of the canvas
-
+    
         //pipes
         for (int i = 0; i < pipes.size(); i++) {
             Pipe pipe = pipes.get(i);
             pipe.x += velocityX;
-
+    
             if (!pipe.passed && bird.x > pipe.x + pipe.width) {
-                score += 0.5; //0.5 because there are 2 pipes! so 0.5*2 = 1, 1 for each set of pipes
+                score += 0.5; //0.5 vì có 2 ống
                 pipe.passed = true;
             }
-
+    
             if (collision(bird, pipe)) {
                 gameOver = true;
             }
         }
-
+    
         if (bird.y > boardHeight) {
             gameOver = true;
         }
@@ -246,12 +271,14 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void actionPerformed(ActionEvent e) { 
+        if (!gameStarted) return; // Không làm gì nếu trò chơi chưa bắt đầu
         move();
         repaint();
         if (gameOver) {
             placePipeTimer.stop();
             gameLoop.stop();
             saveScore();
+            gameStarted = false; // Đặt lại để người chơi nhấn Space mới chơi lại
         }
     }
     
@@ -285,19 +312,24 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            // System.out.println("JUMP!");
+            if (!gameStarted) {
+                gameStarted = true;
+                gameLoop.start();
+                placePipeTimer.start();
+                firstTime = false; // Đặt cờ để ẩn thông báo
+                repaint(); // Cập nhật màn hình ngay lập tức để xóa thông báo
+            }
             velocityY = -9;
-
+    
             if (gameOver) {
-                //restart game by resetting conditions
+                // Reset game khi thua
                 bird.y = birdY;
                 velocityY = 0;
                 pipes.clear();
                 gameOver = false;
                 score = 0;
-                gameLoop.start();
-                placePipeTimer.start();
-
+                // gameStarted = false; // Đợi nhấn Space mới chơi lại
+    
                 // Ẩn hai nút khi chơi tiếp
                 if (clickMenu != null && clickStore != null) {
                     this.remove(clickMenu);
