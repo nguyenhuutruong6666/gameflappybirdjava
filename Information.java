@@ -46,7 +46,6 @@ public class Information extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(backgroundImg, 0, 0, getWidth(), getHeight(), this);
-        
         g.setFont(new Font("Arial", Font.BOLD, 24));
         g.setColor(Color.BLACK);
         String text = "Donate in here";

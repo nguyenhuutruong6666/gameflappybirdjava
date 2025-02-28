@@ -94,7 +94,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
         bottomPipeImg = new ImageIcon(getClass().getResource("./picture/bottompipe.png")).getImage();
         backgroundDiem = new ImageIcon(getClass().getResource("./picture/flappybirdbg1.png")).getImage();
         bgScore = new ImageIcon(getClass().getResource("./picture/bgScore.png")).getImage();
-
+        
 
         //bird
         bird = new Bird(birdImg);
@@ -114,6 +114,25 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
 		//game timer
 		gameLoop = new Timer(1000/60, this); //how long it takes to start timer, milliseconds gone between frames 
         gameLoop.start();
+
+        // Mặc định nếu không có file hoặc lỗi thì dùng skin mặc định
+String selectedSkin = "test.png"; 
+File skinFile = new File("SelectBird.txt");
+
+if (skinFile.exists()) {
+    try (BufferedReader reader = new BufferedReader(new FileReader(skinFile))) {
+        String skinName = reader.readLine();
+        if (skinName != null && !skinName.isEmpty()) {
+            selectedSkin = skinName;
+        }
+    } catch (IOException ex) {
+        ex.printStackTrace();
+    }
+}
+
+// Load skin đã chọn
+birdImg = new ImageIcon(getClass().getResource("/picture/" + selectedSkin)).getImage();
+
 	}
     
     void placePipes() {
