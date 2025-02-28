@@ -44,58 +44,64 @@ public class StoreBird extends JPanel {
         gridPanel.setBounds(20, 80, 320, 250);
         gridPanel.setOpaque(false);
         
-// Sửa phần vòng lặp for để thêm sự kiện khi chọn skin
-for (int i = 0; i < 6; i++) {
-    JPanel itemPanel = new JPanel();
-    itemPanel.setLayout(new BorderLayout());
-    itemPanel.setOpaque(false);
+        // Sửa phần vòng lặp for để thêm sự kiện khi chọn skin
+        for (int i = 0; i < 6; i++) {
+            JPanel itemPanel = new JPanel();
+            itemPanel.setLayout(new BorderLayout());
+            itemPanel.setOpaque(false);
 
-    JLabel imageLabel = new JLabel(new ImageIcon(new ImageIcon(getClass().getResource("/picture/" + imageNames[i]))
-                            .getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH)));
-    imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            JLabel imageLabel = new JLabel(new ImageIcon(new ImageIcon(getClass().getResource("/picture/" + imageNames[i]))
+                                    .getImage().getScaledInstance(80, 55, Image.SCALE_SMOOTH)));
+            imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-    JLabel priceLabel = new JLabel(prices[i] + " point", SwingConstants.CENTER);
-    priceLabel.setFont(new Font("Arial", Font.BOLD, 14));
-    priceLabel.setForeground(Color.WHITE);
+            JLabel priceLabel = new JLabel(prices[i] + " point", SwingConstants.CENTER);
+            priceLabel.setFont(new Font("Arial", Font.BOLD, 14));
+            priceLabel.setForeground(Color.WHITE);
 
-    JButton selectButton = new JButton(ownedSkins.contains(imageNames[i]) ? "Use" : "Select");
-    selectButton.setFont(new Font("Arial", Font.BOLD, 12));
-    selectButton.setBackground(Color.ORANGE);
-    selectButton.setForeground(Color.WHITE);
-    
-    final int index = i;
-    selectButton.addActionListener(new ActionListener() {
+            // JButton selectButton = new JButton(ownedSkins.contains(imageNames[i]) ? "Use" : "Select");
+            JButton selectButton = new JButton(ownedSkins.contains(imageNames[i]) ? "Select" : "Buy");
+            selectButton.setFont(new Font("Arial", Font.BOLD, 12));
+            selectButton.setBackground(Color.ORANGE);
+            selectButton.setForeground(Color.BLACK);
+            
+            final int index = i;
+            selectButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (ownedSkins.contains(imageNames[index])) {
+                        saveSelectedSkin(imageNames[index]);
+                        JOptionPane.showMessageDialog(frame, "Bạn đã chọn skin " + imageNames[index]);
+                    } else {
+                        buySkin(imageNames[index], prices[index], scoreLabel, selectButton);
+                    }
+                }
+            });
+
+            itemPanel.add(imageLabel, BorderLayout.CENTER);
+            itemPanel.add(priceLabel, BorderLayout.NORTH);
+            itemPanel.add(selectButton, BorderLayout.SOUTH);
+            gridPanel.add(itemPanel);
+        }
+
+        // Nút dùng lại skin mặc định
+        ImageIcon defaultIcon = new ImageIcon(new ImageIcon(getClass().getResource("/picture/test.png"))
+                                    .getImage().getScaledInstance(80, 55, Image.SCALE_SMOOTH));
+
+        JButton defaultButton = new JButton("Use Skin Default", defaultIcon);
+        defaultButton.setFont(new Font("Arial", Font.BOLD, 12));
+        defaultButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        defaultButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+        defaultButton.setBackground(Color.GRAY);
+        defaultButton.setForeground(Color.WHITE);
+        defaultButton.setBounds(110, 350, 140, 120);
+        defaultButton.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (ownedSkins.contains(imageNames[index])) {
-                saveSelectedSkin(imageNames[index]);
-                JOptionPane.showMessageDialog(frame, "Bạn đã chọn skin " + imageNames[index]);
-            } else {
-                buySkin(imageNames[index], prices[index], scoreLabel, selectButton);
+                saveSelectedSkin("test.png");
+                JOptionPane.showMessageDialog(frame, "Reset to default skin!");
             }
-        }
-    });
-
-    itemPanel.add(imageLabel, BorderLayout.CENTER);
-    itemPanel.add(priceLabel, BorderLayout.NORTH);
-    itemPanel.add(selectButton, BorderLayout.SOUTH);
-    gridPanel.add(itemPanel);
-}
-
-    // Nút dùng lại skin mặc định
-JButton defaultButton = new JButton("Use Skin Default");
-defaultButton.setFont(new Font("Arial", Font.BOLD, 12));
-defaultButton.setBackground(Color.GRAY);
-defaultButton.setForeground(Color.WHITE);
-defaultButton.setBounds(110, 400, 140, 40);
-defaultButton.addActionListener(new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        saveSelectedSkin("test.png");
-        JOptionPane.showMessageDialog(frame, "Reset to default skin!");
-    }
-});
-add(defaultButton);
+        });
+        add(defaultButton);
 
         
         add(gridPanel);
@@ -123,7 +129,8 @@ add(defaultButton);
             saveSelectedSkin(skinName); // Lưu skin được chọn
             ownedSkins.add(skinName);
             scoreLabel.setText("Total score: " + totalScore);   // Cập nhật điểm trên giao diện
-            button.setText("Use");
+            // button.setText("Use");
+            button.setText("Select");
             JOptionPane.showMessageDialog(this, "Bạn đã đổi thành công skin " + skinName);
         } else {
             JOptionPane.showMessageDialog(this, "Không đủ điểm để mua skin này!");

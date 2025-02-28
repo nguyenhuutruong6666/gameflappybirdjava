@@ -30,8 +30,8 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
     int birdY = boardWidth/2;
 //    int birdWidth = 34;
 //    int birdHeight = 24;
-    int birdWidth = 60;
-    int birdHeight = 60;
+    int birdWidth = 55;
+    int birdHeight = 40;
 
     class Bird {
         int x = birdX;
@@ -116,22 +116,22 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
         gameLoop.start();
 
         // Mặc định nếu không có file hoặc lỗi thì dùng skin mặc định
-String selectedSkin = "test.png"; 
-File skinFile = new File("SelectBird.txt");
+        String selectedSkin = "test.png"; 
+        File skinFile = new File("SelectBird.txt");
 
-if (skinFile.exists()) {
-    try (BufferedReader reader = new BufferedReader(new FileReader(skinFile))) {
-        String skinName = reader.readLine();
-        if (skinName != null && !skinName.isEmpty()) {
-            selectedSkin = skinName;
+        if (skinFile.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(skinFile))) {
+                String skinName = reader.readLine();
+                if (skinName != null && !skinName.isEmpty()) {
+                    selectedSkin = skinName;
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
-    } catch (IOException ex) {
-        ex.printStackTrace();
-    }
-}
 
-// Load skin đã chọn
-birdImg = new ImageIcon(getClass().getResource("/picture/" + selectedSkin)).getImage();
+        // Load skin đã chọn
+        birdImg = new ImageIcon(getClass().getResource("/picture/" + selectedSkin)).getImage();
 
 	}
     
