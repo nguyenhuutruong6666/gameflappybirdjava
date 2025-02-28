@@ -7,11 +7,14 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 public class StoreBird extends JPanel {
     private JFrame frame;
     private int totalScore;
     private Image backgroundImg;
+    private Set<String> ownedSkins;
 
     public StoreBird(JFrame frame) {
         this.frame = frame;
@@ -23,6 +26,8 @@ public class StoreBird extends JPanel {
 
         // Đọc tổng điểm từ file diem.txt
         totalScore = readScoreFromFile("diem.txt");
+        // luu skin da mua
+        ownedSkins = readOwnedSkins("ownedSkins.txt");
 
         // Hiển thị tổng điểm
         JLabel scoreLabel = new JLabel("Total score: " + totalScore, SwingConstants.CENTER);
@@ -53,28 +58,32 @@ for (int i = 0; i < 6; i++) {
     priceLabel.setFont(new Font("Arial", Font.BOLD, 14));
     priceLabel.setForeground(Color.WHITE);
 
-    JButton selectButton = new JButton("Select");
+    JButton selectButton = new JButton(ownedSkins.contains(imageNames[i]) ? "Use" : "Select");
     selectButton.setFont(new Font("Arial", Font.BOLD, 12));
     selectButton.setBackground(Color.ORANGE);
     selectButton.setForeground(Color.WHITE);
     
-    final int index = i; // Chỉ mục để lấy tên skin và giá
+    final int index = i;
     selectButton.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            buySkin(imageNames[index], prices[index], scoreLabel);
+            if (ownedSkins.contains(imageNames[index])) {
+                saveSelectedSkin(imageNames[index]);
+                JOptionPane.showMessageDialog(frame, "Bạn đã chọn skin " + imageNames[index]);
+            } else {
+                buySkin(imageNames[index], prices[index], scoreLabel, selectButton);
+            }
         }
     });
 
     itemPanel.add(imageLabel, BorderLayout.CENTER);
     itemPanel.add(priceLabel, BorderLayout.NORTH);
     itemPanel.add(selectButton, BorderLayout.SOUTH);
-
     gridPanel.add(itemPanel);
 }
 
     // Nút dùng lại skin mặc định
-JButton defaultButton = new JButton("Use Default");
+JButton defaultButton = new JButton("Use Skin Default");
 defaultButton.setFont(new Font("Arial", Font.BOLD, 12));
 defaultButton.setBackground(Color.GRAY);
 defaultButton.setForeground(Color.WHITE);
@@ -106,14 +115,15 @@ add(defaultButton);
         add(backButton);
     }
 
-    private void buySkin(String skinName, int price, JLabel scoreLabel) {
+    private void buySkin(String skinName, int price, JLabel scoreLabel, JButton button) {
         if (totalScore >= price) {
             totalScore -= price; // Trừ điểm
-            saveScoreToFile("diem.txt", totalScore); // Ghi lại điểm mới
+            saveScoreToFile("diem.txt", totalScore);    // Ghi lại điểm mới
+            saveOwnedSkin(skinName);    // Lưu skin da mua
             saveSelectedSkin(skinName); // Lưu skin được chọn
-    
-            // Cập nhật điểm trên giao diện
-            scoreLabel.setText("Total score: " + totalScore);
+            ownedSkins.add(skinName);
+            scoreLabel.setText("Total score: " + totalScore);   // Cập nhật điểm trên giao diện
+            button.setText("Use");
             JOptionPane.showMessageDialog(this, "Bạn đã đổi thành công skin " + skinName);
         } else {
             JOptionPane.showMessageDialog(this, "Không đủ điểm để mua skin này!");
@@ -129,14 +139,34 @@ add(defaultButton);
 }
 
 private void saveSelectedSkin(String skinName) {
-    try (BufferedWriter writer = new BufferedWriter(new FileWriter("selectBird.txt"))) {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter("SelectBird.txt"))) {
         writer.write(skinName);
     } catch (IOException ex) {
         ex.printStackTrace();
     }
 }
 
-    
+private void saveOwnedSkin(String skinName) {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter("ownedSkins.txt", true))) {
+        writer.write(skinName);
+        writer.newLine();
+    } catch (IOException ex) {
+        ex.printStackTrace();
+    }
+}  
+
+    private Set<String> readOwnedSkins(String filename) {
+        Set<String> skins = new HashSet<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                skins.add(line.trim());
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return skins;
+    }
 
     private int readScoreFromFile(String filename) {
         int score = 0;
