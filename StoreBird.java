@@ -74,7 +74,7 @@ for (int i = 0; i < 6; i++) {
 }
 
     // Nút dùng lại skin mặc định
-JButton defaultButton = new JButton("Use Skin Default");
+JButton defaultButton = new JButton("Use Default");
 defaultButton.setFont(new Font("Arial", Font.BOLD, 12));
 defaultButton.setBackground(Color.GRAY);
 defaultButton.setForeground(Color.WHITE);

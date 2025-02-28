@@ -17,6 +17,5 @@ public class App {
         frame.add(menuScreen);
         frame.pack();
         frame.setVisible(true);
-
     }
 }

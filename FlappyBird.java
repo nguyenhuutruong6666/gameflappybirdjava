@@ -117,7 +117,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
 
         // Mặc định nếu không có file hoặc lỗi thì dùng skin mặc định
 String selectedSkin = "test.png"; 
-File skinFile = new File("selectBird.txt");
+File skinFile = new File("SelectBird.txt");
 
 if (skinFile.exists()) {
     try (BufferedReader reader = new BufferedReader(new FileReader(skinFile))) {
