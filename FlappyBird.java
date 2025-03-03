@@ -303,7 +303,9 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
     
     private void saveScore() {
         File file = new File("diem.txt");
+        File highScoreFile = new File("HighScore.txt");
         int totalScore = 0;
+        int highScore = 0;
 
         // Đọc điểm cũ
         if (file.exists()) {
@@ -311,6 +313,18 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
                 String line = reader.readLine();
                 if (line != null) {
                     totalScore = Integer.parseInt(line.trim());
+                }
+            } catch (IOException | NumberFormatException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        // Đọc điểm cao nhất từ file HighScore.txt
+        if (highScoreFile.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(highScoreFile))) {
+                String line = reader.readLine();
+                if (line != null) {
+                    highScore = Integer.parseInt(line.trim());
                 }
             } catch (IOException | NumberFormatException ex) {
                 ex.printStackTrace();
@@ -325,6 +339,16 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
             writer.write(String.valueOf(totalScore));
         } catch (IOException ex) {
             ex.printStackTrace();
+        }
+
+        // Kiểm tra và cập nhật điểm cao nhất
+        if ((int) score > highScore) {
+            highScore = (int) score;
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(highScoreFile))) {
+                writer.write(String.valueOf(highScore));
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
