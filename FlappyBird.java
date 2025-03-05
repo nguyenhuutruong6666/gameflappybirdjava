@@ -70,6 +70,15 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
     int velocityY = 0; //move bird up/down speed.
     int gravity = 1;
 
+    // Biến điều khiển dao động của ống
+    int pipeOffsetY = 0;      // Độ lệch vị trí của ống theo trục Y
+    int pipeDirection = -1;    // Hướng di chuyển (1 = xuống, -1 = lên)
+    int pipeMoveSpeed = 3;    // Tốc độ di chuyển lên/xuống của ống
+    int pipeStartMovingScore = 7;  // Điểm bắt đầu dao động
+    int pipeStopMovingScore = 22;  // Điểm dừng dao động sau khi vượt thêm 15 điểm
+    boolean pipeMoving = false;     // Trạng thái ống đang dao động
+
+
     ArrayList<Pipe> pipes;
     Random random = new Random();
 
@@ -203,6 +212,17 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
             g.drawImage(bgScore, 0, 0, this.boardWidth, this.boardHeight, null);
             g.drawString(gameOverText, x, y);
 
+            // Reset game khi thua
+            bird.y = birdY;
+            velocityY = 0;
+            pipes.clear();
+            gameOver = false;
+            score = 0;
+
+            // Reset trạng thái dao động của ống
+            pipeStartMovingScore = 7;
+            pipeMoving = false;
+
             if (clickMenu == null && clickStore == null) {
                 // Thêm nút "Menu"
                 clickMenu = new JButton("Menu");
@@ -260,11 +280,33 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
         velocityY += gravity;
         bird.y += velocityY;
         bird.y = Math.max(bird.y, 0); //apply gravity to current bird.y, limit the bird.y to top of the canvas
-    
+        
         //pipes
         for (int i = 0; i < pipes.size(); i++) {
             Pipe pipe = pipes.get(i);
             pipe.x += velocityX;
+
+            // Kích hoạt dao động khi đạt điểm `pipeStartMovingScore`
+            if (score >= pipeStartMovingScore) {
+                pipeMoving = true; // Bắt đầu dao động
+
+                // Khi đã đạt thêm 15 điểm kể từ lúc ống bắt đầu dao động, dừng dao động
+                if (score >= pipeStartMovingScore + 15) {
+                    pipeMoving = false;
+                    pipeStartMovingScore += 22; // Cập nhật mốc điểm tiếp theo để dao động
+                }
+            }
+
+            // Nếu ống đang dao động thì điều chỉnh vị trí theo trục Y
+            if (pipeMoving) {
+                pipe.y += pipeDirection * pipeMoveSpeed;
+
+                // Giới hạn dao động của ống trong khoảng ±20px
+                if (pipeOffsetY >= 25 || pipeOffsetY <= -30) {
+                    pipeDirection *= -1; // Đảo chiều
+                }
+                pipeOffsetY += pipeDirection * pipeMoveSpeed;
+            }
     
             if (!pipe.passed && bird.x > pipe.x + pipe.width) {
                 score += 0.5; //0.5 vì có 2 ống
