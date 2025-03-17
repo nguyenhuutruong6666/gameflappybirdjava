@@ -6,14 +6,15 @@ import java.awt.event.ActionListener;
 public class Information extends JPanel {
     private JFrame frame;
     private Image backgroundImg;
-    private Image qrImage;
+    private Image Image, QRImage;
 
     public Information(JFrame frame) {
         this.frame = frame;
         this.setPreferredSize(new Dimension(360, 640));
 
         backgroundImg = new ImageIcon(getClass().getResource("/picture/flappybirdbg.png")).getImage();
-        qrImage = new ImageIcon(getClass().getResource("/picture/maqr.png")).getImage();
+        Image = new ImageIcon(getClass().getResource("/picture/actor.png")).getImage();
+        QRImage = new ImageIcon(getClass().getResource("/picture/maqr.png")).getImage();
 
         // Tạo nút Back
         JButton backButton = new JButton("Back");
@@ -46,17 +47,18 @@ public class Information extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(backgroundImg, 0, 0, getWidth(), getHeight(), this);
-        g.setFont(new Font("Arial", Font.BOLD, 24));
-        g.setColor(Color.BLACK);
-        String text = "Donate in here";
+        g.setFont(new Font("Arial", Font.BOLD, 18));
+        g.setColor(Color.GRAY);
+        String text = "Version 1.0";
+        String dn = "Donate in here";
         FontMetrics metrics = g.getFontMetrics();
         int x = (getWidth() - metrics.stringWidth(text)) / 2;
-        int y = 200;
-        g.drawString(text, x, y);
+        int y = 622;
 
-        int qrSize = 250;
-        int qrX = (getWidth() - qrSize) / 2;
-        int qrY = y + 30;
-        g.drawImage(qrImage, qrX, qrY, qrSize, qrSize, this);
+        int aX = (getWidth() - 350) / 2;
+        g.drawImage(Image, aX, 50, 350, 600, this);
+        g.drawString(dn, 115, 340);
+        g.drawImage(QRImage, 80, 350, 200, 200, this);
+        g.drawString(text, x, y);
     }
 }
