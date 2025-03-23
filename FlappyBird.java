@@ -74,8 +74,8 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
     int pipeOffsetY = 0;      // Độ lệch vị trí của ống theo trục Y
     int pipeDirection = -1;    // Hướng di chuyển (1 = xuống, -1 = lên)
     int pipeMoveSpeed = 3;    // Tốc độ di chuyển lên/xuống của ống
-    int pipeStartMovingScore = 7;  // Điểm bắt đầu dao động
-    int pipeStopMovingScore = 22;  // Điểm dừng dao động sau khi vượt thêm 15 điểm
+    int pipeStartMovingScore = 20;  // Điểm bắt đầu dao động
+    int pipeStopMovingScore = 32;  // Điểm dừng dao động sau khi vượt thêm 15 điểm
     boolean pipeMoving = false;     // Trạng thái ống đang dao động
 
 
@@ -302,7 +302,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
                 pipe.y += pipeDirection * pipeMoveSpeed;
 
                 // Giới hạn dao động của ống trong khoảng ±20px
-                if (pipeOffsetY >= 25 || pipeOffsetY <= -30) {
+                if (pipeOffsetY >= 35 || pipeOffsetY <= -40) {
                     pipeDirection *= -1; // Đảo chiều
                 }
                 pipeOffsetY += pipeDirection * pipeMoveSpeed;
