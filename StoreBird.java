@@ -18,22 +18,22 @@ public class StoreBird extends JPanel {
         this.setPreferredSize(new Dimension(360, 640));
         this.setLayout(null);
 
-        backgroundImg = new ImageIcon(getClass().getResource("/picture/flappybirdbg.png")).getImage();
+        backgroundImg = new ImageIcon(getClass().getResource("/picture/bgstore.png")).getImage();
         totalScore = readScoreFromFile("diem.txt");
         ownedSkins = readOwnedSkins("ownedSkins.txt");
         selectedSkin = readSelectedSkin("SelectBird.txt");
 
-        JLabel scoreLabel = new JLabel("Total score: " + totalScore, SwingConstants.CENTER);
-        scoreLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        JLabel scoreLabel = new JLabel("" + totalScore, SwingConstants.CENTER);
+        scoreLabel.setFont(new Font("Arial", Font.BOLD, 30));
         scoreLabel.setBounds(0, 30, 360, 30);
-        scoreLabel.setForeground(Color.black);
+        scoreLabel.setForeground(Color.WHITE);
         add(scoreLabel);
 
         String[] imageNames = {"anh1.png", "anh2.png", "anh3.png", "anh4.png", "anh5.png", "anh6.png"};
         int[] prices = {100, 200, 300, 400, 500, 600};
 
-        JPanel gridPanel = new JPanel(new GridLayout(2, 3, 10, 10));
-        gridPanel.setBounds(20, 80, 320, 250);
+        JPanel gridPanel = new JPanel(new GridLayout(2, 3, 15, 21));
+        gridPanel.setBounds(34, 230, 288, 191);
         gridPanel.setOpaque(false);
         
         for (int i = 0; i < 6; i++) {
@@ -42,7 +42,7 @@ public class StoreBird extends JPanel {
             itemPanel.setOpaque(true);
 
             JLabel imageLabel = new JLabel(new ImageIcon(new ImageIcon(getClass().getResource("/picture/" + imageNames[i]))
-                                    .getImage().getScaledInstance(80, 55, Image.SCALE_SMOOTH)));
+                                    .getImage().getScaledInstance(45, 35, Image.SCALE_SMOOTH)));
             imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
             JLabel priceLabel = new JLabel(prices[i] + " point", SwingConstants.CENTER);
@@ -78,12 +78,17 @@ public class StoreBird extends JPanel {
             itemPanel.add(selectButton, BorderLayout.SOUTH);
             gridPanel.add(itemPanel);
         }
-
-        JButton defaultButton = new JButton("Use Skin Default");
-        defaultButton.setFont(new Font("Arial", Font.BOLD, 12));
+        
+        // Nút dùng lại skin mặc định
+        ImageIcon defaultIcon = new ImageIcon(new ImageIcon(getClass().getResource("/picture/test.png"))
+                                    .getImage().getScaledInstance(80, 55, Image.SCALE_SMOOTH));
+        JButton defaultButton = new JButton("Skin Default", defaultIcon);
+        defaultButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        defaultButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+        defaultButton.setFont(new Font("Arial", Font.BOLD, 10));
         defaultButton.setBackground(selectedSkin.equals("test.png") ? Color.GREEN : Color.GRAY);
         defaultButton.setForeground(Color.WHITE);
-        defaultButton.setBounds(110, 350, 140, 40);
+        defaultButton.setBounds(133, 496, 97, 97);
         defaultButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -92,17 +97,15 @@ public class StoreBird extends JPanel {
                 refreshUI();
             }
         });
-        add(defaultButton);
-
-        add(gridPanel);
         
-        JButton backButton = new JButton("Back to Menu");
-        backButton.setFont(new Font("Arial", Font.BOLD, 15));
-        backButton.setBackground(Color.RED);
-        backButton.setForeground(Color.WHITE);
-        backButton.setBounds(110, 500, 140, 40);
+        ImageIcon back = new ImageIcon(new ImageIcon(getClass().getResource("/picture/back.png"))
+                                    .getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH));
+        JButton backButton = new JButton(back);
+        backButton.setBounds(5, 5, 50, 50);
         backButton.addActionListener(e -> returnToMenu());
         add(backButton);
+        add(defaultButton);
+        add(gridPanel);
     }
 
     private void refreshUI() {

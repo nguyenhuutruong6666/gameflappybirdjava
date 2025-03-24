@@ -141,7 +141,6 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
 
         // Load skin đã chọn
         birdImg = new ImageIcon(getClass().getResource("/picture/" + selectedSkin)).getImage();
-
 	}
     
     void placePipes() {
@@ -182,7 +181,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
         if (!gameStarted) {
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.BOLD, 20));
-            String message = "Bấm Space để bắt đầu";
+            String message = "Press Space to start";
             FontMetrics metrics = g.getFontMetrics();
             int x = (boardWidth - metrics.stringWidth(message)) / 2;
             int y = boardHeight / 2;
@@ -192,7 +191,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
         if (firstTime) {
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.BOLD, 20));
-            String message = "Bấm Space để bắt đầu";
+            String message = "Press Space to start";
             FontMetrics metrics = g.getFontMetrics();
             int x = (boardWidth - metrics.stringWidth(message)) / 2;
             int y = boardHeight / 2;
@@ -220,7 +219,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
             score = 0;
 
             // Reset trạng thái dao động của ống
-            pipeStartMovingScore = 7;
+            pipeStartMovingScore = 20;
             pipeMoving = false;
 
             if (clickMenu == null && clickStore == null) {
