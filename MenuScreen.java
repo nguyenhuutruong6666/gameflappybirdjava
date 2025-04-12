@@ -15,28 +15,54 @@ public class MenuScreen extends JPanel {
         bgStart = new ImageIcon(getClass().getResource("/picture/bgStart.png")).getImage();
 
         // Tạo nút "Chơi Game"
-        JButton playButton = new JButton("Play Game");
+        ImageIcon play = new ImageIcon(new ImageIcon(getClass().getResource("/picture/buttonPlay.png"))
+                                    .getImage().getScaledInstance(180, 60, Image.SCALE_SMOOTH));
+        JButton playButton = new JButton(play);
         playButton.setFont(new Font("Arial", Font.BOLD, 20));
         playButton.setFocusPainted(false);
-        playButton.setBounds(100, 200, 160, 50);
-        playButton.setBackground(Color.ORANGE);
-        playButton.setForeground(Color.WHITE);
+        playButton.setBounds(90, 200, 180, 60);
+        playButton.setContentAreaFilled(false); // Làm trong suốt nền và viền
+        playButton.setBorderPainted(false);
+        playButton.setOpaque(false);
+        playButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Tùy chọn: hiệu ứng con trỏ tay khi di chuột
+        
 
         // Tạo nút "Store Bird"
-        JButton playButton1 = new JButton("Store Bird");
-        playButton1.setFont(new Font("Arial", Font.BOLD, 20));
-        playButton1.setFocusPainted(false);
-        playButton1.setBounds(100, 300, 160, 50);
-        playButton1.setBackground(Color.ORANGE);
-        playButton1.setForeground(Color.WHITE);
+        ImageIcon store = new ImageIcon(new ImageIcon(getClass().getResource("/picture/buttonStore.png"))
+                                    .getImage().getScaledInstance(180, 60, Image.SCALE_SMOOTH));
+        JButton btstore = new JButton(store);
+        btstore.setFont(new Font("Arial", Font.BOLD, 20));
+        btstore.setFocusPainted(false);
+        btstore.setBounds(90, 275, 180, 60);
+        btstore.setContentAreaFilled(false); // Làm trong suốt nền và viền
+        btstore.setBorderPainted(false);
+        btstore.setOpaque(false);
+        btstore.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Tùy chọn: hiệu ứng con trỏ tay khi di chuột
+
+        // Tạo nút "cài đặt"
+        ImageIcon setting = new ImageIcon(new ImageIcon(getClass().getResource("/picture/buttonSetting.png"))
+                                    .getImage().getScaledInstance(180, 60, Image.SCALE_SMOOTH));
+        JButton btsetting = new JButton(setting);
+        btsetting.setFont(new Font("Arial", Font.BOLD, 20));
+        btsetting.setFocusPainted(false);
+        btsetting.setBounds(90, 350, 180, 60);
+        btsetting.setContentAreaFilled(false); // Làm trong suốt nền và viền
+        btsetting.setBorderPainted(false);
+        btsetting.setOpaque(false);
+        btsetting.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Tùy chọn: hiệu ứng con trỏ tay khi di chuột
+
 
         // Tạo nút "Thông Tin"
-        JButton playButton2 = new JButton("Information");
-        playButton2.setFont(new Font("Arial", Font.BOLD, 20));
-        playButton2.setFocusPainted(false);
-        playButton2.setBounds(100, 400, 160, 50);
-        playButton2.setBackground(Color.ORANGE);
-        playButton2.setForeground(Color.WHITE);
+        ImageIcon about = new ImageIcon(new ImageIcon(getClass().getResource("/picture/buttonAbout.png"))
+                                    .getImage().getScaledInstance(180, 60, Image.SCALE_SMOOTH));
+        JButton btabout = new JButton(about);
+        btabout.setFont(new Font("Arial", Font.BOLD, 20));
+        btabout.setFocusPainted(false);
+        btabout.setBounds(90, 425, 180, 60);
+        btabout.setContentAreaFilled(false); // Làm trong suốt nền và viền
+        btabout.setBorderPainted(false);
+        btabout.setOpaque(false);
+        btabout.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Tùy chọn: hiệu ứng con trỏ tay khi di chuột
 
         playButton.addActionListener(new ActionListener() {
             @Override
@@ -45,14 +71,14 @@ public class MenuScreen extends JPanel {
             }
         });
 
-        playButton1.addActionListener(new ActionListener() {
+        btstore.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 openStore();
             }
         });
 
-        playButton2.addActionListener(new ActionListener() {
+        btabout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 openInformation();
@@ -61,8 +87,9 @@ public class MenuScreen extends JPanel {
 
         setLayout(null);
         add(playButton);
-        add(playButton1);
-        add(playButton2);
+        add(btstore);
+        add(btsetting);
+        add(btabout);
     }
 
     private void startGame() {

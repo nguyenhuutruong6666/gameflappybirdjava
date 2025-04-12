@@ -101,7 +101,12 @@ public class StoreBird extends JPanel {
         ImageIcon back = new ImageIcon(new ImageIcon(getClass().getResource("/picture/back.png"))
                                     .getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH));
         JButton backButton = new JButton(back);
-        backButton.setBounds(5, 5, 50, 50);
+        backButton.setBounds(2, 2, 50, 50);
+        backButton.setContentAreaFilled(false);
+        backButton.setBorderPainted(false);
+        backButton.setOpaque(false);
+        backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
         backButton.addActionListener(e -> returnToMenu());
         add(backButton);
         add(defaultButton);

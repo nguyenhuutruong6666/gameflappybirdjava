@@ -11,6 +11,7 @@ import java.util.Random;
 import javax.swing.*;
 
 public class FlappyBird extends JPanel implements ActionListener, KeyListener {
+    int highScore = 0;
     int boardWidth = 360;
     int boardHeight = 640;
 
@@ -24,6 +25,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
 
     private JButton clickMenu;
     private JButton clickStore;
+    private JButton backToMenuButton;
 
     //bird class
     int birdX = boardWidth/8;
@@ -178,7 +180,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
             g.drawImage(pipe.img, pipe.x, pipe.y, pipe.width, pipe.height, null);
         }
         // Space to play
-        if (!gameStarted) {
+        if (!gameStarted || firstTime) {
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.BOLD, 20));
             String message = "Press Space to start";
@@ -186,30 +188,45 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
             int x = (boardWidth - metrics.stringWidth(message)) / 2;
             int y = boardHeight / 2;
             g.drawString(message, x, y);
+
+            if (backToMenuButton == null) {
+                ImageIcon back = new ImageIcon(new ImageIcon(getClass().getResource("/picture/back.png"))
+                                    .getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH));
+                backToMenuButton = new JButton(back);
+                backToMenuButton.setFont(new Font("Arial", Font.BOLD, 15));
+                backToMenuButton.setFocusPainted(false);
+                backToMenuButton.setBounds(2, 2, 50, 50);
+                backToMenuButton.setContentAreaFilled(false);
+                backToMenuButton.setBorderPainted(false);
+                backToMenuButton.setOpaque(false);
+                backToMenuButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                backToMenuButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        returnToMenu();
+                    }
+                });
+                this.setLayout(null);
+                this.add(backToMenuButton);
+            }
         }
 
-        if (firstTime) {
-            g.setColor(Color.WHITE);
-            g.setFont(new Font("Arial", Font.BOLD, 20));
-            String message = "Press Space to start";
-            FontMetrics metrics = g.getFontMetrics();
-            int x = (boardWidth - metrics.stringWidth(message)) / 2;
-            int y = boardHeight / 2;
-            g.drawString(message, x, y);
-        }
         //score
         g.setColor(Color.white);
         g.setFont(new Font("Arial", Font.PLAIN, 32));
         
         
         if (gameOver) {
-            // String gameOverText = "Game Over: " + (int) score;
             String gameOverText = " " + (int) score + " ";
             FontMetrics metrics = g.getFontMetrics();
             int x = (boardWidth - metrics.stringWidth(gameOverText)) / 2;
             int y = (boardHeight / 2) + 22;
             g.drawImage(bgScore, 0, 0, this.boardWidth, this.boardHeight, null);
             g.drawString(gameOverText, x, y);
+            // Vẽ điểm cao nhất
+            g.setFont(new Font("Arial", Font.PLAIN, 16));
+            g.setColor(Color.BLACK);
+            g.drawString("High: " + highScore, 270, 60);
 
             // Reset game khi thua
             bird.y = birdY;
@@ -267,8 +284,8 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
                 this.repaint();
             }
             //score
-            g.drawImage(backgroundDiem, 0, 0, this.boardWidth, this.boardHeight, null);
-            g.drawString(String.valueOf((int) score), 12, 34);
+            g.drawImage(backgroundDiem, 270, 0, this.boardWidth, this.boardHeight, null);
+            g.drawString(String.valueOf((int) score), 282, 34);
         }
     }
 
@@ -423,6 +440,13 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
                     this.revalidate();
                     this.repaint();
                 }
+            }
+
+            if (backToMenuButton != null) {
+                this.remove(backToMenuButton);
+                backToMenuButton = null;
+                this.revalidate();
+                this.repaint();
             }
         }
     }
