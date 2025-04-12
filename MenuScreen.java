@@ -78,6 +78,13 @@ public class MenuScreen extends JPanel {
             }
         });
 
+        btsetting.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openSetting();
+            }
+        });
+
         btabout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -106,6 +113,15 @@ public class MenuScreen extends JPanel {
         frame.getContentPane().removeAll();
         StoreBird storeBird = new StoreBird(frame);
         frame.add(storeBird);
+        frame.pack();
+        frame.revalidate();
+        frame.repaint();
+    }
+
+    private void openSetting() {
+        frame.getContentPane().removeAll();
+        Setting setting = new Setting(frame);
+        frame.add(setting);
         frame.pack();
         frame.revalidate();
         frame.repaint();
