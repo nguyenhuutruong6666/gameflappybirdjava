@@ -12,17 +12,53 @@ import javax.swing.*;
 import javax.sound.sampled.*;
 
 public class FlappyBird extends JPanel implements ActionListener, KeyListener {
+    
+    private boolean isSoundOn = true; // Biến để kiểm tra trạng thái âm thanh, mặc định là bật
+    public void toggleSound() {
+        isSoundOn = !isSoundOn; // Đảo ngược trạng thái âm thanh
+    
+        if (isSoundOn) {
+            System.out.println("Âm thanh bật");
+        } else {
+            System.out.println("Âm thanh tắt");
+        }
+    }
 
-    // Phát âm thanh khi chim bay lên
-    public void playJumpSound() {
+    public void playButtonClickSound() {
+        if (!isSoundOn) return; // Nếu âm thanh tắt, không làm gì
+    
         try {
-            // Đảm bảo đường dẫn đúng
-            File soundFile = new File(getClass().getResource("/sound/jump.wav").toURI()); // Đảm bảo đường dẫn đúng
+            // Đảm bảo rằng bạn có một tệp âm thanh "buttonClick.wav" trong thư mục "sound"
+            File soundFile = new File(getClass().getResource("/sound/buttonClick.wav").toURI());
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
             Clip clip = AudioSystem.getClip();
             clip.open(audioStream);
             clip.start();
-            clip.drain(); // Đảm bảo âm thanh phát xong trước khi kết thúc phương thức
+    
+            // Đảm bảo âm thanh phát xong
+            while (clip.isRunning()) {
+                Thread.sleep(10); // Đợi cho đến khi âm thanh phát xong
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Nếu có lỗi khi phát âm thanh
+        }
+    }    
+
+    // Phát âm thanh khi chim bay lên
+    public void playJumpSound() {
+        if (!isSoundOn) return; // Nếu âm thanh tắt, không làm gì
+
+        try {
+            File soundFile = new File(getClass().getResource("/sound/jump.wav").toURI());
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.start();
+
+            // Đảm bảo âm thanh phát xong
+            while (clip.isRunning()) {
+                Thread.sleep(10); // Đợi cho đến khi âm thanh phát xong
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -30,8 +66,10 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
 
     // Phát âm thanh khi trò chơi kết thúc
     public void playGameOverSound() {
+        if (!isSoundOn) return; // Nếu âm thanh tắt, không làm gì
+
         try {
-            File soundFile = new File(getClass().getResource("/sound/gameOver.wav").toURI()); // Đảm bảo đường dẫn đúng
+            File soundFile = new File(getClass().getResource("/sound/gameOver.wav").toURI());
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
             Clip clip = AudioSystem.getClip();
             clip.open(audioStream);
@@ -44,8 +82,10 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
 
     // Phát âm thanh khi cộng điểm
     public void playPointSound() {
+        if (!isSoundOn) return; // Nếu âm thanh tắt, không làm gì
+
         try {
-            File soundFile = new File(getClass().getResource("/sound/point.wav").toURI()); // Đảm bảo đường dẫn đúng
+            File soundFile = new File(getClass().getResource("/sound/point.wav").toURI());
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
             Clip clip = AudioSystem.getClip();
             clip.open(audioStream);

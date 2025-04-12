@@ -1,11 +1,37 @@
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*; 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 public class MenuScreen extends JPanel {
     private JFrame frame;
     private Image bgStart;
+    private boolean isSoundOn = true; // Biến theo dõi trạng thái âm thanh
+
+    public void playButtonClickSound() {
+        if (!isSoundOn) return; // Nếu âm thanh tắt, không làm gì
+
+        try {
+            // Đảm bảo rằng bạn có tệp âm thanh "buttonClick.wav" trong thư mục "sound"
+            File soundFile = new File(getClass().getResource("/sound/buttonClick.wav").toURI());
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.start();
+
+            // Đảm bảo âm thanh phát xong
+            while (clip.isRunning()) {
+                Thread.sleep(10); // Đợi cho đến khi âm thanh phát xong
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Nếu có lỗi khi phát âm thanh
+        }
+    }
+
 
     public MenuScreen(JFrame frame) {
         this.frame = frame;
@@ -21,11 +47,10 @@ public class MenuScreen extends JPanel {
         playButton.setFont(new Font("Arial", Font.BOLD, 20));
         playButton.setFocusPainted(false);
         playButton.setBounds(90, 200, 180, 60);
-        playButton.setContentAreaFilled(false); // Làm trong suốt nền và viền
+        playButton.setContentAreaFilled(false);
         playButton.setBorderPainted(false);
         playButton.setOpaque(false);
-        playButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Tùy chọn: hiệu ứng con trỏ tay khi di chuột
-        
+        playButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         // Tạo nút "Store Bird"
         ImageIcon store = new ImageIcon(new ImageIcon(getClass().getResource("/picture/buttonStore.png"))
@@ -34,23 +59,22 @@ public class MenuScreen extends JPanel {
         btstore.setFont(new Font("Arial", Font.BOLD, 20));
         btstore.setFocusPainted(false);
         btstore.setBounds(90, 275, 180, 60);
-        btstore.setContentAreaFilled(false); // Làm trong suốt nền và viền
+        btstore.setContentAreaFilled(false);
         btstore.setBorderPainted(false);
         btstore.setOpaque(false);
-        btstore.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Tùy chọn: hiệu ứng con trỏ tay khi di chuột
+        btstore.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        // Tạo nút "cài đặt"
+        // Tạo nút "Cài đặt"
         ImageIcon setting = new ImageIcon(new ImageIcon(getClass().getResource("/picture/buttonSetting.png"))
                                     .getImage().getScaledInstance(180, 60, Image.SCALE_SMOOTH));
         JButton btsetting = new JButton(setting);
         btsetting.setFont(new Font("Arial", Font.BOLD, 20));
         btsetting.setFocusPainted(false);
         btsetting.setBounds(90, 350, 180, 60);
-        btsetting.setContentAreaFilled(false); // Làm trong suốt nền và viền
+        btsetting.setContentAreaFilled(false);
         btsetting.setBorderPainted(false);
         btsetting.setOpaque(false);
-        btsetting.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Tùy chọn: hiệu ứng con trỏ tay khi di chuột
-
+        btsetting.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         // Tạo nút "Thông Tin"
         ImageIcon about = new ImageIcon(new ImageIcon(getClass().getResource("/picture/buttonAbout.png"))
@@ -59,36 +83,41 @@ public class MenuScreen extends JPanel {
         btabout.setFont(new Font("Arial", Font.BOLD, 20));
         btabout.setFocusPainted(false);
         btabout.setBounds(90, 425, 180, 60);
-        btabout.setContentAreaFilled(false); // Làm trong suốt nền và viền
+        btabout.setContentAreaFilled(false);
         btabout.setBorderPainted(false);
         btabout.setOpaque(false);
-        btabout.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Tùy chọn: hiệu ứng con trỏ tay khi di chuột
+        btabout.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
+        // Thêm ActionListener vào các nút và gọi playButtonClickSound()
         playButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                startGame();
+                playButtonClickSound(); // Phát âm thanh khi nhấn nút
+                startGame(); // Chuyển sang màn hình chơi game
             }
         });
 
         btstore.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                openStore();
+                playButtonClickSound(); // Phát âm thanh khi nhấn nút
+                openStore(); // Chuyển sang màn hình cửa hàng
             }
         });
 
         btsetting.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                openSetting();
+                playButtonClickSound(); // Phát âm thanh khi nhấn nút
+                openSetting(); // Chuyển sang màn hình cài đặt
             }
         });
 
         btabout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                openInformation();
+                playButtonClickSound(); // Phát âm thanh khi nhấn nút
+                openInformation(); // Chuyển sang màn hình thông tin
             }
         });
 
