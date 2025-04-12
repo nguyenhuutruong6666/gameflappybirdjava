@@ -226,7 +226,9 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
             // Vẽ điểm cao nhất
             // Đọc highScore từ file và hiển thị
             int highScore = readHighScore();
-            g.drawString(" " + highScore + " ", x, 191);
+            String highScoreText = " " + highScore + " ";
+            int x2 = (boardWidth - metrics.stringWidth(highScoreText)) / 2;
+            g.drawString(highScoreText, x2, 191);
 
             // Reset game khi thua
             bird.y = birdY;
