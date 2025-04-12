@@ -9,97 +9,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.*;
-import javax.sound.sampled.*;
 
 public class FlappyBird extends JPanel implements ActionListener, KeyListener {
-    
-    private boolean isSoundOn = true; // Biến để kiểm tra trạng thái âm thanh, mặc định là bật
-    public void toggleSound() {
-        isSoundOn = !isSoundOn; // Đảo ngược trạng thái âm thanh
-    
-        if (isSoundOn) {
-            System.out.println("Âm thanh bật");
-        } else {
-            System.out.println("Âm thanh tắt");
-        }
-    }
-
-    public void playButtonClickSound() {
-        if (!isSoundOn) return; // Nếu âm thanh tắt, không làm gì
-    
-        try {
-            // Đảm bảo rằng bạn có một tệp âm thanh "buttonClick.wav" trong thư mục "sound"
-            File soundFile = new File(getClass().getResource("/sound/buttonClick.wav").toURI());
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioStream);
-            clip.start();
-    
-            // Đảm bảo âm thanh phát xong
-            while (clip.isRunning()) {
-                Thread.sleep(10); // Đợi cho đến khi âm thanh phát xong
-            }
-        } catch (Exception e) {
-            e.printStackTrace(); // Nếu có lỗi khi phát âm thanh
-        }
-    }    
-
-    // Phát âm thanh khi chim bay lên
-    public void playJumpSound() {
-        if (!isSoundOn) return; // Nếu âm thanh tắt, không làm gì
-
-        try {
-            File soundFile = new File(getClass().getResource("/sound/jump.wav").toURI());
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioStream);
-            clip.start();
-
-            // Đảm bảo âm thanh phát xong
-            while (clip.isRunning()) {
-                Thread.sleep(10); // Đợi cho đến khi âm thanh phát xong
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Phát âm thanh khi trò chơi kết thúc
-    public void playGameOverSound() {
-        if (!isSoundOn) return; // Nếu âm thanh tắt, không làm gì
-
-        try {
-            File soundFile = new File(getClass().getResource("/sound/gameOver.wav").toURI());
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioStream);
-            clip.start();
-            clip.drain(); // Đảm bảo âm thanh phát xong
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Phát âm thanh khi cộng điểm
-    public void playPointSound() {
-        if (!isSoundOn) return; // Nếu âm thanh tắt, không làm gì
-
-        try {
-            File soundFile = new File(getClass().getResource("/sound/point.wav").toURI());
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioStream);
-            clip.start();
-            clip.drain(); // Đảm bảo âm thanh phát xong
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     int boardWidth = 360;
     int boardHeight = 640;
 
-    // images
+    //images
     Image backgroundImg;
     Image backgroundDiem;
     Image bgScore;
@@ -111,11 +26,11 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
     private JButton clickStore;
     private JButton backToMenuButton;
 
-    // bird class
-    int birdX = boardWidth / 8;
-    int birdY = boardWidth / 2;
-    // int birdWidth = 34;
-    // int birdHeight = 24;
+    //bird class
+    int birdX = boardWidth/8;
+    int birdY = boardWidth/2;
+//    int birdWidth = 34;
+//    int birdHeight = 24;
     int birdWidth = 55;
     int birdHeight = 40;
 
@@ -131,12 +46,12 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
         }
     }
 
-    // pipe class
+    //pipe class
     int pipeX = boardWidth;
     int pipeY = 0;
-    int pipeWidth = 64; // scaled by 1/6
+    int pipeWidth = 64;  //scaled by 1/6
     int pipeHeight = 512;
-
+    
     class Pipe {
         int x = pipeX;
         int y = pipeY;
@@ -150,19 +65,20 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
         }
     }
 
-    // game logic
+    //game logic
     Bird bird;
-    int velocityX = -4; // move pipes to the left speed (simulates bird moving right)
-    int velocityY = 0; // move bird up/down speed.
+    int velocityX = -4; //move pipes to the left speed (simulates bird moving right)
+    int velocityY = 0; //move bird up/down speed.
     int gravity = 1;
 
     // Biến điều khiển dao động của ống
-    int pipeOffsetY = 0; // Độ lệch vị trí của ống theo trục Y
-    int pipeDirection = -1; // Hướng di chuyển (1 = xuống, -1 = lên)
-    int pipeMoveSpeed = 3; // Tốc độ di chuyển lên/xuống của ống
-    int pipeStartMovingScore = 20; // Điểm bắt đầu dao động
-    int pipeStopMovingScore = 32; // Điểm dừng dao động sau khi vượt thêm 15 điểm
-    boolean pipeMoving = false; // Trạng thái ống đang dao động
+    int pipeOffsetY = 0;      // Độ lệch vị trí của ống theo trục Y
+    int pipeDirection = -1;    // Hướng di chuyển (1 = xuống, -1 = lên)
+    int pipeMoveSpeed = 3;    // Tốc độ di chuyển lên/xuống của ống
+    int pipeStartMovingScore = 20;  // Điểm bắt đầu dao động
+    int pipeStopMovingScore = 32;  // Điểm dừng dao động sau khi vượt thêm 15 điểm
+    boolean pipeMoving = false;     // Trạng thái ống đang dao động
+
 
     ArrayList<Pipe> pipes;
     Random random = new Random();
@@ -181,35 +97,36 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
         setFocusable(true);
         addKeyListener(this);
 
-        // load images
+        //load images
         backgroundImg = new ImageIcon(getClass().getResource("./picture/flappybirdbg.png")).getImage();
         birdImg = new ImageIcon(getClass().getResource("./picture/test.png")).getImage();
         topPipeImg = new ImageIcon(getClass().getResource("./picture/toppipe.png")).getImage();
         bottomPipeImg = new ImageIcon(getClass().getResource("./picture/bottompipe.png")).getImage();
         backgroundDiem = new ImageIcon(getClass().getResource("./picture/flappybirdbg1.png")).getImage();
         bgScore = new ImageIcon(getClass().getResource("./picture/bgScore.png")).getImage();
+        
 
-        // bird
+        //bird
         bird = new Bird(birdImg);
         pipes = new ArrayList<Pipe>();
 
-        // place pipes timer
+        //place pipes timer
         placePipeTimer = new Timer(1500, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Code to be executed
-                // test
-                placePipes();
+              // Code to be executed
+              // test
+              placePipes();
             }
         });
         placePipeTimer.start();
-
-        // game timer
-        gameLoop = new Timer(1000 / 60, this); // how long it takes to start timer, milliseconds gone between frames
+        
+		//game timer
+		gameLoop = new Timer(1000/60, this); //how long it takes to start timer, milliseconds gone between frames 
         gameLoop.start();
 
         // Mặc định nếu không có file hoặc lỗi thì dùng skin mặc định
-        String selectedSkin = "test.png";
+        String selectedSkin = "test.png"; 
         File skinFile = new File("SelectBird.txt");
 
         if (skinFile.exists()) {
@@ -225,37 +142,38 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
 
         // Load skin đã chọn
         birdImg = new ImageIcon(getClass().getResource("/picture/" + selectedSkin)).getImage();
-    }
-
+	}
+    
     void placePipes() {
-        // (0-1) * pipeHeight/2.
+        //(0-1) * pipeHeight/2.
         // 0 -> -128 (pipeHeight/4)
         // 1 -> -128 - 256 (pipeHeight/4 - pipeHeight/2) = -3/4 pipeHeight
-        int randomPipeY = (int) (pipeY - pipeHeight / 4 - Math.random() * (pipeHeight / 2));
-        int openingSpace = boardHeight / 4;
-
+        int randomPipeY = (int) (pipeY - pipeHeight/4 - Math.random()*(pipeHeight/2));
+        int openingSpace = boardHeight/4;
+    
         Pipe topPipe = new Pipe(topPipeImg);
         topPipe.y = randomPipeY;
         pipes.add(topPipe);
-
+    
         Pipe bottomPipe = new Pipe(bottomPipeImg);
-        bottomPipe.y = topPipe.y + pipeHeight + openingSpace;
+        bottomPipe.y = topPipe.y  + pipeHeight + openingSpace;
         pipes.add(bottomPipe);
     }
-
+    
+    
     public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        draw(g);
-    }
+		super.paintComponent(g);
+		draw(g);
+	}
 
-    public void draw(Graphics g) {
-        // background
+	public void draw(Graphics g) {
+        //background
         g.drawImage(backgroundImg, 0, 0, this.boardWidth, this.boardHeight, null);
-
-        // bird
+    
+        //bird
         g.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height, null);
-
-        // pipes
+        
+        //pipes
         for (int i = 0; i < pipes.size(); i++) {
             Pipe pipe = pipes.get(i);
             g.drawImage(pipe.img, pipe.x, pipe.y, pipe.width, pipe.height, null);
@@ -272,7 +190,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
 
             if (backToMenuButton == null) {
                 ImageIcon back = new ImageIcon(new ImageIcon(getClass().getResource("/picture/back.png"))
-                        .getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH));
+                                    .getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH));
                 backToMenuButton = new JButton(back);
                 backToMenuButton.setFont(new Font("Arial", Font.BOLD, 15));
                 backToMenuButton.setFocusPainted(false);
@@ -292,10 +210,11 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
             }
         }
 
-        // score
+        //score
         g.setColor(Color.white);
         g.setFont(new Font("Arial", Font.PLAIN, 28));
-
+        
+        
         if (gameOver) {
             String gameOverText = " " + (int) score + " ";
             FontMetrics metrics = g.getFontMetrics();
@@ -336,7 +255,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
                         returnToMenu();
                     }
                 });
-
+                
                 // Thêm nút "Store"
                 clickStore = new JButton("Store");
                 clickStore.setFont(new Font("Arial", Font.BOLD, 15));
@@ -350,7 +269,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
                         ToStore();
                     }
                 });
-
+                
                 // Thêm nút vào JPanel
                 this.setLayout(null);
                 this.add(clickMenu);
@@ -366,22 +285,21 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
                 this.revalidate();
                 this.repaint();
             }
-            // score
+            //score
             g.drawImage(backgroundDiem, 270, 0, this.boardWidth, this.boardHeight, null);
             g.drawString(String.valueOf((int) score), 282, 34);
         }
     }
 
     public void move() {
-        if (!gameStarted)
-            return; // Nếu chưa bắt đầu thì không di chuyển
+        if (!gameStarted) return; // Nếu chưa bắt đầu thì không di chuyển
 
-        // bird
+        //bird
         velocityY += gravity;
         bird.y += velocityY;
-        bird.y = Math.max(bird.y, 0); // apply gravity to current bird.y, limit the bird.y to top of the canvas
-
-        // pipes
+        bird.y = Math.max(bird.y, 0); //apply gravity to current bird.y, limit the bird.y to top of the canvas
+        
+        //pipes
         for (int i = 0; i < pipes.size(); i++) {
             Pipe pipe = pipes.get(i);
             pipe.x += velocityX;
@@ -407,45 +325,42 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
                 }
                 pipeOffsetY += pipeDirection * pipeMoveSpeed;
             }
-
+    
             if (!pipe.passed && bird.x > pipe.x + pipe.width) {
-                score += 0.5; // 0.5 vì có 2 ống
+                score += 0.5; //0.5 vì có 2 ống
                 pipe.passed = true;
-                playPointSound(); // Phát âm thanh khi cộng điểm
             }
-
+    
             if (collision(bird, pipe)) {
                 gameOver = true;
             }
         }
-
+    
         if (bird.y > boardHeight) {
             gameOver = true;
         }
     }
 
     boolean collision(Bird a, Pipe b) {
-        return a.x < b.x + b.width &&
-                a.x + a.width > b.x &&
-                a.y < b.y + b.height &&
-                a.y + a.height > b.y;
+        return a.x < b.x + b.width &&   
+               a.x + a.width > b.x &&   
+               a.y < b.y + b.height && 
+               a.y + a.height > b.y;    
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if (!gameStarted)
-            return; // Không làm gì nếu trò chơi chưa bắt đầu
+    public void actionPerformed(ActionEvent e) { 
+        if (!gameStarted) return; // Không làm gì nếu trò chơi chưa bắt đầu
         move();
         repaint();
         if (gameOver) {
-            playGameOverSound(); // Phát âm thanh khi trò chơi kết thúc
             placePipeTimer.stop();
             gameLoop.stop();
             saveScore();
             gameStarted = false; // Đặt lại để người chơi nhấn Space mới chơi lại
         }
     }
-
+    
     private void saveScore() {
         File file = new File("diem.txt");
         File highScoreFile = new File("HighScore.txt");
@@ -508,8 +423,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
                 repaint(); // Cập nhật màn hình ngay lập tức để xóa thông báo
             }
             velocityY = -9;
-            playJumpSound(); // Phát âm thanh khi chim bay lên
-
+    
             if (gameOver) {
                 // Reset game khi thua
                 bird.y = birdY;
@@ -518,7 +432,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
                 gameOver = false;
                 score = 0;
                 // gameStarted = false; // Đợi nhấn Space mới chơi lại
-
+    
                 // Ẩn hai nút khi chơi tiếp
                 if (clickMenu != null && clickStore != null) {
                     this.remove(clickMenu);
@@ -570,13 +484,10 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
         }
     }
 
-    // not needed
+    //not needed
     @Override
-    public void keyTyped(KeyEvent e) {
-    }
+    public void keyTyped(KeyEvent e) {}
 
     @Override
-    public void keyReleased(KeyEvent e) {
-    }
-
+    public void keyReleased(KeyEvent e) {}
 }
