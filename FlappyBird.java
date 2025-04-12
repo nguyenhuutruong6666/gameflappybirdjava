@@ -11,7 +11,6 @@ import java.util.Random;
 import javax.swing.*;
 
 public class FlappyBird extends JPanel implements ActionListener, KeyListener {
-    int highScore = 0;
     int boardWidth = 360;
     int boardHeight = 640;
 
@@ -213,7 +212,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
 
         //score
         g.setColor(Color.white);
-        g.setFont(new Font("Arial", Font.PLAIN, 32));
+        g.setFont(new Font("Arial", Font.PLAIN, 28));
         
         
         if (gameOver) {
@@ -223,10 +222,11 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
             int y = (boardHeight / 2) + 22;
             g.drawImage(bgScore, 0, 0, this.boardWidth, this.boardHeight, null);
             g.drawString(gameOverText, x, y);
+
             // Vẽ điểm cao nhất
-            g.setFont(new Font("Arial", Font.PLAIN, 16));
-            g.setColor(Color.BLACK);
-            g.drawString("High: " + highScore, 270, 60);
+            // Đọc highScore từ file và hiển thị
+            int highScore = readHighScore();
+            g.drawString(" " + highScore + " ", x, 191);
 
             // Reset game khi thua
             bird.y = birdY;
@@ -469,6 +469,17 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
         frame1.pack();
         frame1.revalidate();
         frame1.repaint();
+    }
+
+    private int readHighScore() {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("HighScore.txt"));
+            String line = reader.readLine();
+            reader.close();
+            return line != null ? Integer.parseInt(line.trim()) : 0;
+        } catch (IOException | NumberFormatException e) {
+            return 0;
+        }
     }
 
     //not needed
