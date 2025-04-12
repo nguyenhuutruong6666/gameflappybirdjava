@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.*;
+import javax.sound.sampled.*;
 
 public class FlappyBird extends JPanel implements ActionListener, KeyListener {
     int boardWidth = 360;
@@ -329,15 +330,18 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
             if (!pipe.passed && bird.x > pipe.x + pipe.width) {
                 score += 0.5; //0.5 vì có 2 ống
                 pipe.passed = true;
+                SoundPlayer.playSound("picture/soundfly.wav");
             }
     
             if (collision(bird, pipe)) {
                 gameOver = true;
+                SoundPlayer.playSound("picture/soundend.wav");
             }
         }
     
         if (bird.y > boardHeight) {
             gameOver = true;
+            SoundPlayer.playSound("picture/soundend.wav");
         }
     }
 
@@ -490,4 +494,45 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {}
+
+    // Hàm phát âm thanh
+    public class SoundPlayer {
+
+        public static void playSound(String filePath) {
+            if (!isSoundEnabled()) {
+                return; // Không phát nếu âm thanh bị tắt
+            }
+    
+            try {
+                File soundFile = new File(filePath);
+                AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioIn);
+                clip.start();
+            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                e.printStackTrace();
+            }
+        }
+    
+        private static boolean isSoundEnabled() {
+            File settingFile = new File("setting.txt");
+    
+            if (!settingFile.exists()) {
+                return true; // Mặc định bật nếu không có file
+            }
+    
+            try (BufferedReader reader = new BufferedReader(new FileReader(settingFile))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    if (line.trim().equalsIgnoreCase("false")) {
+                        return false;
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+    
+            return true; // Mặc định là bật nếu không tìm thấy dòng nào liên quan
+        }
+    }
 }
