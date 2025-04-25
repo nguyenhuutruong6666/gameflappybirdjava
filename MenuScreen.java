@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 public class MenuScreen extends JPanel {
+    //JPanel là một thành phần giao diện (GUI component) dùng để chứa các nút, ảnh, hoặc các thành phần khác.
     private JFrame frame;
     private Image bgStart;
     private boolean isSoundOn = true; // Biến theo dõi trạng thái âm thanh
@@ -20,8 +21,8 @@ public class MenuScreen extends JPanel {
             File soundFile = new File(getClass().getResource("/sound/buttonClick.wav").toURI());
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
             Clip clip = AudioSystem.getClip();
-            clip.open(audioStream);
-            clip.start();
+            clip.open(audioStream); //mở luồng âm thanh.
+            clip.start(); //bắt đầu phát.
 
             // Đảm bảo âm thanh phát xong
             while (clip.isRunning()) {
@@ -45,12 +46,12 @@ public class MenuScreen extends JPanel {
                                     .getImage().getScaledInstance(180, 60, Image.SCALE_SMOOTH));
         JButton playButton = new JButton(play);
         playButton.setFont(new Font("Arial", Font.BOLD, 20));
-        playButton.setFocusPainted(false);
+        playButton.setFocusPainted(false); //Tắt hiệu ứng viền nét đứt (focus border) khi nút được chọn hoặc tab đến.
         playButton.setBounds(90, 200, 180, 60);
-        playButton.setContentAreaFilled(false);
-        playButton.setBorderPainted(false);
-        playButton.setOpaque(false);
-        playButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        playButton.setContentAreaFilled(false); //Không vẽ nền (background) mặc định của nút.
+        playButton.setBorderPainted(false); //Tắt vẽ viền (border) quanh nút.
+        playButton.setOpaque(false); //Cho phép phần nền phía sau (background) hiển thị xuyên qua nút.
+        playButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); //Khi người dùng đưa chuột lên nút, con trỏ chuyển thành hình bàn tay 🤚.
 
         // Tạo nút "Store Bird"
         ImageIcon store = new ImageIcon(new ImageIcon(getClass().getResource("/picture/buttonStore.png"))
@@ -121,7 +122,7 @@ public class MenuScreen extends JPanel {
             }
         });
 
-        setLayout(null);
+        setLayout(null); //tự kiểm soát vị trí và kích thước từng thành phần
         add(playButton);
         add(btstore);
         add(btsetting);
@@ -133,9 +134,9 @@ public class MenuScreen extends JPanel {
         FlappyBird game = new FlappyBird();
         frame.add(game);
         frame.pack();
-        game.requestFocus();
-        frame.revalidate();
-        frame.repaint();
+        game.requestFocus(); //Yêu cầu FlappyBird nhận focus bàn phím, để người dùng có thể điều khiển game bằng phím
+        frame.revalidate(); //Yêu cầu Swing cập nhật lại layout của JFrame sau khi có thay đổi (thêm hoặc xóa thành phần).
+        frame.repaint(); //Yêu cầu vẽ lại toàn bộ giao diện (repaint() tất cả thành phần trong frame).
     }
 
     private void openStore() {

@@ -435,17 +435,17 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
                 pipes.clear();
                 gameOver = false;
                 score = 0;
-                // gameStarted = false; // Đợi nhấn Space mới chơi lại
+                gameStarted = false; // Đợi nhấn Space mới chơi lại
     
-                // Ẩn hai nút khi chơi tiếp
-                if (clickMenu != null && clickStore != null) {
-                    this.remove(clickMenu);
-                    this.remove(clickStore);
-                    clickMenu = null;
-                    clickStore = null;
-                    this.revalidate();
-                    this.repaint();
-                }
+                // // Ẩn hai nút khi chơi tiếp
+                // if (clickMenu != null && clickStore != null) {
+                //     this.remove(clickMenu);
+                //     this.remove(clickStore);
+                //     clickMenu = null;
+                //     clickStore = null;
+                //     this.revalidate();
+                //     this.repaint();
+                // }
             }
 
             if (backToMenuButton != null) {
