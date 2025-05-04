@@ -196,10 +196,10 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
                 backToMenuButton.setFont(new Font("Arial", Font.BOLD, 15));
                 backToMenuButton.setFocusPainted(false);
                 backToMenuButton.setBounds(2, 2, 50, 50);
-                backToMenuButton.setContentAreaFilled(false);
-                backToMenuButton.setBorderPainted(false);
-                backToMenuButton.setOpaque(false);
-                backToMenuButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                //backToMenuButton.setContentAreaFilled(false);
+                //backToMenuButton.setBorderPainted(false);
+                //backToMenuButton.setOpaque(false);
+                //backToMenuButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 backToMenuButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -283,7 +283,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
                 this.remove(clickStore);
                 clickMenu = null;
                 clickStore = null;
-                this.revalidate();
+                //this.revalidate();
                 this.repaint();
             }
             //score
