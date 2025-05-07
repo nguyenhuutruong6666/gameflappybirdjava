@@ -10,7 +10,7 @@ public class StoreBird extends JPanel {
     private JFrame frame;
     private int totalScore;
     private Image backgroundImg;
-    private Set<String> ownedSkins;
+    private Set<String> ownedSkins; //một tập hợp các phần tử mà không có phần tử nào trùng lặp
     private String selectedSkin;
 
     public StoreBird(JFrame frame) {
@@ -34,7 +34,7 @@ public class StoreBird extends JPanel {
 
         JPanel gridPanel = new JPanel(new GridLayout(2, 3, 15, 21));
         gridPanel.setBounds(34, 230, 288, 191);
-        gridPanel.setOpaque(false);
+        gridPanel.setOpaque(false); // làm mờ bgr
         
         for (int i = 0; i < 6; i++) {
             JPanel itemPanel = new JPanel();
@@ -63,7 +63,7 @@ public class StoreBird extends JPanel {
             selectButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (ownedSkins.contains(imageNames[index])) {
+                    if (ownedSkins.contains(imageNames[index])) { //contains: chứa
                         saveSelectedSkin(imageNames[index]);
                         JOptionPane.showMessageDialog(frame, "You have chosen a skin " + imageNames[index]);
                         refreshUI();

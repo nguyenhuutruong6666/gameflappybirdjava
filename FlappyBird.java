@@ -30,8 +30,6 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
     //bird class
     int birdX = boardWidth/8;
     int birdY = boardWidth/2;
-//    int birdWidth = 34;
-//    int birdHeight = 24;
     int birdWidth = 55;
     int birdHeight = 40;
 
@@ -50,7 +48,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
     //pipe class
     int pipeX = boardWidth;
     int pipeY = 0;
-    int pipeWidth = 64;  //scaled by 1/6
+    int pipeWidth = 64;
     int pipeHeight = 512;
     
     class Pipe {
@@ -76,8 +74,8 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
     int pipeOffsetY = 0;      // Độ lệch vị trí của ống theo trục Y
     int pipeDirection = -1;    // Hướng di chuyển (1 = xuống, -1 = lên)
     int pipeMoveSpeed = 3;    // Tốc độ di chuyển lên/xuống của ống
-    int pipeStartMovingScore = 20;  // Điểm bắt đầu dao động
-    int pipeStopMovingScore = 32;  // Điểm dừng dao động sau khi vượt thêm 15 điểm
+    int pipeStartMovingScore = 5 + 1;  // Điểm bắt đầu dao động
+    //int pipeStopMovingScore = 10;  // Điểm dừng dao động sau khi vượt thêm 15 điểm
     boolean pipeMoving = false;     // Trạng thái ống đang dao động
 
 
@@ -239,7 +237,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
             score = 0;
 
             // Reset trạng thái dao động của ống
-            pipeStartMovingScore = 20;
+            pipeStartMovingScore = 5 + 1;
             pipeMoving = false;
 
             if (clickMenu == null && clickStore == null) {
@@ -309,11 +307,11 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
             if (score >= pipeStartMovingScore) {
                 pipeMoving = true; // Bắt đầu dao động
 
-                // Khi đã đạt thêm 15 điểm kể từ lúc ống bắt đầu dao động, dừng dao động
-                if (score >= pipeStartMovingScore + 15) {
-                    pipeMoving = false;
-                    pipeStartMovingScore += 22; // Cập nhật mốc điểm tiếp theo để dao động
-                }
+                // // Khi đã đạt thêm 15 điểm kể từ lúc ống bắt đầu dao động, dừng dao động
+                // if (score >= pipeStartMovingScore + 5) {
+                //     pipeMoving = false;
+                //     pipeStartMovingScore += 5; // Cập nhật mốc điểm tiếp theo để dao động
+                // }
             }
 
             // Nếu ống đang dao động thì điều chỉnh vị trí theo trục Y
@@ -333,7 +331,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
                 SoundPlayer.playSound("picture/soundfly.wav");
             }
     
-            if (collision(bird, pipe)) {
+            if (collision(bird, pipe)) { //collision: va chạm
                 gameOver = true;
                 SoundPlayer.playSound("picture/soundend.wav");
             }
@@ -372,7 +370,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
         int highScore = 0;
 
         // Đọc điểm cũ
-        if (file.exists()) {
+        if (file.exists()) { //exists: tồn tại
             try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
                 String line = reader.readLine();
                 if (line != null) {

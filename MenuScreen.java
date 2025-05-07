@@ -11,27 +11,6 @@ public class MenuScreen extends JPanel {
     //JPanel là một thành phần giao diện (GUI component) dùng để chứa các nút, ảnh, hoặc các thành phần khác.
     private JFrame frame;
     private Image bgStart;
-    private boolean isSoundOn = true; // Biến theo dõi trạng thái âm thanh
-
-    public void playButtonClickSound() {
-        if (!isSoundOn) return; // Nếu âm thanh tắt, không làm gì
-
-        try {
-            // Đảm bảo rằng bạn có tệp âm thanh "buttonClick.wav" trong thư mục "sound"
-            File soundFile = new File(getClass().getResource("/sound/buttonClick.wav").toURI());
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioStream); //mở luồng âm thanh.
-            clip.start(); //bắt đầu phát.
-
-            // Đảm bảo âm thanh phát xong
-            while (clip.isRunning()) {
-                Thread.sleep(10); // Đợi cho đến khi âm thanh phát xong
-            }
-        } catch (Exception e) {
-            e.printStackTrace(); // Nếu có lỗi khi phát âm thanh
-        }
-    }
 
 
     public MenuScreen(JFrame frame) {
@@ -89,11 +68,9 @@ public class MenuScreen extends JPanel {
         btabout.setOpaque(false);
         btabout.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        // Thêm ActionListener vào các nút và gọi playButtonClickSound()
         playButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                playButtonClickSound(); // Phát âm thanh khi nhấn nút
                 startGame(); // Chuyển sang màn hình chơi game
             }
         });
@@ -101,7 +78,6 @@ public class MenuScreen extends JPanel {
         btstore.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                playButtonClickSound(); // Phát âm thanh khi nhấn nút
                 openStore(); // Chuyển sang màn hình cửa hàng
             }
         });
@@ -109,7 +85,6 @@ public class MenuScreen extends JPanel {
         btsetting.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                playButtonClickSound(); // Phát âm thanh khi nhấn nút
                 openSetting(); // Chuyển sang màn hình cài đặt
             }
         });
@@ -117,7 +92,6 @@ public class MenuScreen extends JPanel {
         btabout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                playButtonClickSound(); // Phát âm thanh khi nhấn nút
                 openInformation(); // Chuyển sang màn hình thông tin
             }
         });
@@ -133,7 +107,7 @@ public class MenuScreen extends JPanel {
         frame.getContentPane().removeAll();
         FlappyBird game = new FlappyBird();
         frame.add(game);
-        frame.pack();
+        frame.pack(); //sử dụng pack() để JFrame tự động điều chỉnh kích thước theo các thành phần bên trong.
         game.requestFocus(); //Yêu cầu FlappyBird nhận focus bàn phím, để người dùng có thể điều khiển game bằng phím
         frame.revalidate(); //Yêu cầu Swing cập nhật lại layout của JFrame sau khi có thay đổi (thêm hoặc xóa thành phần).
         frame.repaint(); //Yêu cầu vẽ lại toàn bộ giao diện (repaint() tất cả thành phần trong frame).

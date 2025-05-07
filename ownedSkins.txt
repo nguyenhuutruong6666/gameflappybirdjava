@@ -1,5 +1,2 @@
 anh1.png
-anh5.png
-anh2.png
 anh6.png
-anh3.png
