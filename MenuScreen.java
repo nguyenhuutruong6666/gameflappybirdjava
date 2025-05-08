@@ -1,11 +1,7 @@
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.*; 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 public class MenuScreen extends JPanel {
     //JPanel là một thành phần giao diện (GUI component) dùng để chứa các nút, ảnh, hoặc các thành phần khác.
@@ -71,28 +67,28 @@ public class MenuScreen extends JPanel {
         playButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                startGame(); // Chuyển sang màn hình chơi game
+                startGame();
             }
         });
 
         btstore.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                openStore(); // Chuyển sang màn hình cửa hàng
+                openStore();
             }
         });
 
         btsetting.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                openSetting(); // Chuyển sang màn hình cài đặt
+                openSetting();
             }
         });
 
         btabout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                openInformation(); // Chuyển sang màn hình thông tin
+                openInformation();
             }
         });
 

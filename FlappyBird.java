@@ -75,7 +75,6 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
     int pipeDirection = -1;    // Hướng di chuyển (1 = xuống, -1 = lên)
     int pipeMoveSpeed = 3;    // Tốc độ di chuyển lên/xuống của ống
     int pipeStartMovingScore = 5 + 1;  // Điểm bắt đầu dao động
-    //int pipeStopMovingScore = 10;  // Điểm dừng dao động sau khi vượt thêm 15 điểm
     boolean pipeMoving = false;     // Trạng thái ống đang dao động
 
 
@@ -92,7 +91,6 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
 
     FlappyBird() {
         setPreferredSize(new Dimension(boardWidth, boardHeight));
-        // setBackground(Color.blue);
         setFocusable(true);
         addKeyListener(this);
 
@@ -104,7 +102,6 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
         backgroundDiem = new ImageIcon(getClass().getResource("./picture/flappybirdbg1.png")).getImage();
         bgScore = new ImageIcon(getClass().getResource("./picture/bgScore.png")).getImage();
         
-
         //bird
         bird = new Bird(birdImg);
         pipes = new ArrayList<Pipe>();
@@ -113,8 +110,6 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
         placePipeTimer = new Timer(1500, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-              // Code to be executed
-              // test
               placePipes();
             }
         });
@@ -194,10 +189,6 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
                 backToMenuButton.setFont(new Font("Arial", Font.BOLD, 15));
                 backToMenuButton.setFocusPainted(false);
                 backToMenuButton.setBounds(2, 2, 50, 50);
-                //backToMenuButton.setContentAreaFilled(false);
-                //backToMenuButton.setBorderPainted(false);
-                //backToMenuButton.setOpaque(false);
-                //backToMenuButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 backToMenuButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -306,12 +297,6 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
             // Kích hoạt dao động khi đạt điểm `pipeStartMovingScore`
             if (score >= pipeStartMovingScore) {
                 pipeMoving = true; // Bắt đầu dao động
-
-                // // Khi đã đạt thêm 15 điểm kể từ lúc ống bắt đầu dao động, dừng dao động
-                // if (score >= pipeStartMovingScore + 5) {
-                //     pipeMoving = false;
-                //     pipeStartMovingScore += 5; // Cập nhật mốc điểm tiếp theo để dao động
-                // }
             }
 
             // Nếu ống đang dao động thì điều chỉnh vị trí theo trục Y
@@ -434,16 +419,6 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
                 gameOver = false;
                 score = 0;
                 gameStarted = false; // Đợi nhấn Space mới chơi lại
-    
-                // // Ẩn hai nút khi chơi tiếp
-                // if (clickMenu != null && clickStore != null) {
-                //     this.remove(clickMenu);
-                //     this.remove(clickStore);
-                //     clickMenu = null;
-                //     clickStore = null;
-                //     this.revalidate();
-                //     this.repaint();
-                // }
             }
 
             if (backToMenuButton != null) {
@@ -495,12 +470,10 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
 
     // Hàm phát âm thanh
     public class SoundPlayer {
-
         public static void playSound(String filePath) {
             if (!isSoundEnabled()) {
                 return; // Không phát nếu âm thanh bị tắt
             }
-    
             try {
                 File soundFile = new File(filePath);
                 AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
@@ -514,11 +487,9 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
     
         private static boolean isSoundEnabled() {
             File settingFile = new File("setting.txt");
-    
             if (!settingFile.exists()) {
                 return true; // Mặc định bật nếu không có file
             }
-    
             try (BufferedReader reader = new BufferedReader(new FileReader(settingFile))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
@@ -529,7 +500,6 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-    
             return true; // Mặc định là bật nếu không tìm thấy dòng nào liên quan
         }
     }

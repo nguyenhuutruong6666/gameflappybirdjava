@@ -37,8 +37,8 @@ public class StoreBird extends JPanel {
         gridPanel.setOpaque(false); // làm mờ bgr
         
         for (int i = 0; i < 6; i++) {
-            JPanel itemPanel = new JPanel();
-            itemPanel.setLayout(new BorderLayout());
+            JPanel itemPanel = new JPanel(); //JPanel là một thành phần giao diện (GUI component) dùng để chứa các nút, ảnh, hoặc các thành phần khác.
+            itemPanel.setLayout(new BorderLayout()); //bố trí các thành phần giao diện
             itemPanel.setOpaque(true);
 
             JLabel imageLabel = new JLabel(new ImageIcon(new ImageIcon(getClass().getResource("/picture/" + imageNames[i]))

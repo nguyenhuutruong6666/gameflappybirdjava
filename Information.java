@@ -79,5 +79,4 @@ public class Information extends JPanel {
         }
         g.drawString(line.toString(), x, y); // Vẽ dòng cuối
     }
-    
 }
